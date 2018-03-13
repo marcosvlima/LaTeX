@@ -1,3 +1,9 @@
+# LaTeX
+
+O que é o LaTeX? Como usar? Como instalar?… Esse repositório tem como objetivo 
+servir de referência para todos que queiram aprender a utilizar o LaTeX  ou até 
+mesmo tirar uma dúvida de certo comando.
+
 # O que é o LaTeX?
 
 LaTeX é um conjunto de macros de alto nível que torna mais fácil e rápida

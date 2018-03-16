@@ -14,3 +14,7 @@ O objetivo do LaTeX é que o autor se possa distanciar da apresentação visual 
 trabalho e assim se concentrar no seu conteúdo. Possui formas de lidar com
 bibliografias, citações, formatos de páginas, referências e tudo mais que não
 seja relacionado com conteúdo do documento em si.
+
+## Como Instalar o LaTeX
+
+- [Instalação no Windows](/Instalação/instalação-windows.md)

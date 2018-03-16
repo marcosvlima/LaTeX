@@ -18,3 +18,11 @@ seja relacionado com conteúdo do documento em si.
 ## Como Instalar o LaTeX
 
 - [Instalação no Windows](/Instalação/instalação-windows.md)
+
+- [Instalação no Ubuntu](/Instalação/instalação-ubuntu.md)
+
+## Editando Documentos LaTex na Nuvem
+
+Existem ferramentas que possibilitam a edição e a colaboração online de documentos LaTeX. Uma dessas ferramentas é o [Overleaf](https://www.overleaf.com/)
+
+Para usar o Overleaf basta criar uma conta, começar um projeto e escrever. Uma outra grande vantagem do Overleaf é a comunidade que compartilha templates prontos, como por exemplo:[principais templates](Templates/principais-templates.md)

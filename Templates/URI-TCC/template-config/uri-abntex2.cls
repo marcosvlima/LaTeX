@@ -330,10 +330,10 @@
     \vspace*{96pt}
 
     \begin{center}
-        \ABNTEXchapterfont\large\MakeUppercase{\imprimirtitulo}
+        \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirtitulo}
         \abntex@ifnotempty{\imprimirsubtitulo}
 	{%
-        	{\ABNTEXchapterfont: }{\large{\imprimirsubtitulo}}
+        	{\ABNTEXchapterfont: }{\normalsize{\imprimirsubtitulo}}
         }
     \end{center}
 

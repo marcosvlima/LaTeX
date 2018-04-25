@@ -210,6 +210,8 @@
 % -----------------------------------------------------------------------------
 
 % Redefinição de fontes
+% Para aleterar o tipo de fonte coloque \fontfamily{ptm}
+% Setado times como fonte para títulos
 \renewcommand{\ABNTEXchapterfont}{\normalfont\bfseries\fontfamily{ptm}}
 \renewcommand{\ABNTEXchapterfontsize}{\normalsize}
 

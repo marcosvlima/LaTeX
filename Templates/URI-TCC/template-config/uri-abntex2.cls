@@ -288,7 +288,7 @@
         \end{center}
         \vspace{70pt}
 	\begin{center}
-		\bfseries\normalsize\MakeUppercase{\imprimirautor}\\
+		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirautor}\\
 	\end{center}
 	\vspace{140pt}
         \begin{center}
@@ -305,10 +305,10 @@
 	%\end{center}
 	\vfill
         \begin{center}
-		\begin{SingleSpacing}
-            		\bfseries\normalsize\MakeUppercase{\imprimirlocal}\\
-            		\bfseries\normalsize\MakeUppercase{\imprimirdata}
-		\end{SingleSpacing}
+		\begin{OnehalfSpace}
+            		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirlocal}\\
+            		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirdata}
+		\end{OnehalfSpace}
     	\end{center}
 
     \end{capa}
@@ -324,7 +324,7 @@
 {%
     \setcounter{page}{2}
     \begin{center}
-        \large\MakeUppercase{\imprimirautor}\\
+        \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirautor}\\
     \end{center}
 
     \vspace*{96pt}

@@ -476,12 +476,12 @@
 
     \begin{flushright}
         \begin{minipage}{.5\textwidth}
-            \begin{SingleSpacing}
+            \begin{OnehalfSpace}
                 \setlength\parindent{0pt}
                 \setlength\parskip{12pt}
 }
 {%
-            \end{SingleSpacing}
+            \end{OnehalfSpace}
         \end{minipage}
     \end{flushright}
 }

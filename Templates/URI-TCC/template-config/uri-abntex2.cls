@@ -327,7 +327,7 @@
         \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirautor}\\
     \end{center}
 
-    \vspace*{96pt}
+    \vspace*{225pt}
 
     \begin{center}
         \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirtitulo}

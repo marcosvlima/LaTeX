@@ -337,7 +337,7 @@
         }
     \end{center}
 
-    \vspace*{60pt}
+    \vspace*{45pt}
 
     \abntex@ifnotempty{\imprimirpreambulo}
     {%

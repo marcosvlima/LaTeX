@@ -365,13 +365,13 @@
         \end{tabular}
     }
 
-    \vspace*{\fill}
+    \vfill
 
     \begin{center}
-	\begin{SingleSpacing}
+	\begin{OnehalfSpace}
             \bfseries\normalsize\MakeUppercase{\imprimirlocal}\\
             \bfseries\normalsize\MakeUppercase{\imprimirdata}
-	\end{SingleSpacing}
+	\end{OnehalfSpace}
     \end{center}
 }
 \makeatother

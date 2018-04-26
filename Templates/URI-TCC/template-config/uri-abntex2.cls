@@ -342,8 +342,8 @@
     \abntex@ifnotempty{\imprimirpreambulo}
     {%
         \SingleSpacing
-        \begin{tabular}{p{.44\textwidth}p{.13\textwidth}p{.44\textwidth}}
-            & \multicolumn{2}{p{.4\textwidth}}{\normalsize\hyphenpenalty=10000{\bfseries\imprimirpreambulo}} \\ & & \\
+        \begin{tabular}{p{.35\textwidth}p{.13\textwidth}p{.44\textwidth}}
+            & \multicolumn{2}{p{.5\textwidth}}{\normalsize\hyphenpenalty=10000{\bfseries\imprimirpreambulo}} \\ & & \\
             \abntex@ifnotempty{\imprimirareaconcentracao}
             {%
                 & \multicolumn{2}{p{.6\textwidth}}{\normalsize\hyphenpenalty=10000{\imprimirareaconcentracaoRotulo\imprimirareaconcentracao}} \\ & & \\

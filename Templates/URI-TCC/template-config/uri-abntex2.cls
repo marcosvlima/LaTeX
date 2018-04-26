@@ -212,7 +212,7 @@
 % Redefinição de fontes
 % Para aleterar o tipo de fonte coloque \fontfamily{ptm}
 % Setado times como fonte para títulos
-\renewcommand{\ABNTEXchapterfont}{\normalfont\bfseries\fontfamily{ptm}}
+\renewcommand{\ABNTEXchapterfont}{\normalfont\bfseries}
 \renewcommand{\ABNTEXchapterfontsize}{\normalsize}
 
 \renewcommand{\ABNTEXpartfont}{\normalfont}
@@ -354,7 +354,7 @@
             }
             \abntex@ifnotempty{\imprimirorientador}
             {%
-                & \bfseries\small\imprimirorientadorRotulo & \imprimirorientador                 
+                & \bfseries\small\imprimirorientadorRotulo & \imprimirorientador
             }
             % O campo para coorientador foi comentando
             % \abntex@ifnotempty{\imprimircoorientador}

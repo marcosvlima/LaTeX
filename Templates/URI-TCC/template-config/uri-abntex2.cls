@@ -369,8 +369,8 @@
 
     \begin{center}
 	\begin{SingleSpacing}
-            \large\MakeUppercase{\imprimirlocal}\\
-            \large\MakeUppercase{\imprimirdata}
+            \bfseries\normalsize\MakeUppercase{\imprimirlocal}\\
+            \bfseries\normalsize\MakeUppercase{\imprimirdata}
 	\end{SingleSpacing}
     \end{center}
 }

@@ -248,7 +248,7 @@
 % Ajusta nomes padrões do babel
     \renewcommand{\listadesiglasname}{LISTA DE ABREVIATURAS E SIGLAS}
     \renewcommand{\listadesimbolosname}{LISTA DE S\'{I}MBOLOS}
-    \renewcommand{\listfigurename}{LISTA DE FIGURAS}
+    \renewcommand{\listfigurename}{LISTA DE ILUSTRA\c{C}\~OES}
     \renewcommand{\listtablename}{LISTA DE TABELAS}
     \renewcommand{\indexname}{\'{I}NDICE REMISSIVO}
 % Ajusta nomes usados com a macro \autoref

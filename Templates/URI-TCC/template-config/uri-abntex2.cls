@@ -382,15 +382,60 @@
 \makeatletter
 \newcommand{\imprimirfolhadeaprovacao}
 {%
-    \begin{folhadeaprovacao}
-        \vspace*{\fill}
 
-        \begin{tabular}{p{.45\textwidth}p{.45\textwidth}}
-            & \imprimirtextopadraofolhadeaprovacao \\
+    \begin{center}
+        \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirautor}\\
+    \end{center}
+
+    \vspace*{225pt}
+
+    \begin{center}
+        \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirtitulo}
+        \abntex@ifnotempty{\imprimirsubtitulo}
+	{%
+        	{\ABNTEXchapterfont: }{\normalsize{\imprimirsubtitulo}}
+        }
+    \end{center}
+
+    \vspace*{45pt}
+
+    \abntex@ifnotempty{\imprimirpreambulo}
+    {%
+        \SingleSpacing
+        \begin{tabular}{p{.35\textwidth}p{.13\textwidth}p{.44\textwidth}}
+            & \multicolumn{2}{p{.5\textwidth}}{\normalsize\hyphenpenalty=10000{\bfseries\imprimirpreambulo}} \\ & & \\
+            \abntex@ifnotempty{\imprimirareaconcentracao}
+            {%
+                & \multicolumn{2}{p{.6\textwidth}}{\normalsize\hyphenpenalty=10000{\imprimirareaconcentracaoRotulo\imprimirareaconcentracao}} \\ & & \\
+            }
+            \abntex@ifnotempty{\imprimirlinhapesquisa}
+            {%
+                & \multicolumn{2}{p{.6\textwidth}}{\normalsize\hyphenpenalty=10000{\imprimirlinhapesquisaRotulo\imprimirlinhapesquisa}} \\ & & \\
+            }
+            \abntex@ifnotempty{\imprimirorientador}
+            {%
+                & \bfseries\normalsize\imprimirorientadorRotulo & \bfseries\normalsize\imprimirorientador
+            }
+            % O campo para coorientador foi comentando
+            % \abntex@ifnotempty{\imprimircoorientador}
+            % {%
+            %     & \small\imprimircoorientadorRotulo & \imprimircoorientador \\
+            %     & & \small\imprimirinstCoorientador
+            % }
         \end{tabular}
+      }
 
-        \vspace*{\fill}
-    \end{folhadeaprovacao}
+
+
+    % \begin{folhadeaprovacao}
+    %     \vspace*{\fill}
+    %
+    %     \begin{tabular}{p{.30\textwidth}p{.45\textwidth}}
+    %         & \imprimirtextopadraofolhadeaprovacao \\
+    %     \end{tabular}
+    %
+    %     \vspace*{\fill}
+    % \end{folhadeaprovacao}
 }
 \makeatother
 

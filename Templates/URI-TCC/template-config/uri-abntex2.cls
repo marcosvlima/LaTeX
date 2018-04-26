@@ -15,7 +15,7 @@
 
 % -----------------------------------------------------------------------------
 % Customização da classe abnTeX2 (http://www.abntex.net.br/) para as normas da URI
-% 
+%
 % Estas Modificações tiveram como base o projeto da UTFPR http://tcc.tsi.gp.utfpr.edu.br/paginas/modelos-latex-da-utfpr
 %
 %------------------------------------------------------------------------------
@@ -343,18 +343,18 @@
     {%
         \SingleSpacing
         \begin{tabular}{p{.44\textwidth}p{.13\textwidth}p{.44\textwidth}}
-            & \multicolumn{2}{p{.4\textwidth}}{\small\hyphenpenalty=10000{\bfseries\imprimirpreambulo}} \\ & & \\
+            & \multicolumn{2}{p{.4\textwidth}}{\normalsize\hyphenpenalty=10000{\bfseries\imprimirpreambulo}} \\ & & \\
             \abntex@ifnotempty{\imprimirareaconcentracao}
             {%
-                & \multicolumn{2}{p{.6\textwidth}}{\small\hyphenpenalty=10000{\imprimirareaconcentracaoRotulo\imprimirareaconcentracao}} \\ & & \\
+                & \multicolumn{2}{p{.6\textwidth}}{\normalsize\hyphenpenalty=10000{\imprimirareaconcentracaoRotulo\imprimirareaconcentracao}} \\ & & \\
             }
             \abntex@ifnotempty{\imprimirlinhapesquisa}
             {%
-                & \multicolumn{2}{p{.6\textwidth}}{\small\hyphenpenalty=10000{\imprimirlinhapesquisaRotulo\imprimirlinhapesquisa}} \\ & & \\
+                & \multicolumn{2}{p{.6\textwidth}}{\normalsize\hyphenpenalty=10000{\imprimirlinhapesquisaRotulo\imprimirlinhapesquisa}} \\ & & \\
             }
             \abntex@ifnotempty{\imprimirorientador}
             {%
-                & \bfseries\small\imprimirorientadorRotulo & \imprimirorientador
+                & \bfseries\normalsize\imprimirorientadorRotulo & \bfseries\normalsize\imprimirorientador
             }
             % O campo para coorientador foi comentando
             % \abntex@ifnotempty{\imprimircoorientador}

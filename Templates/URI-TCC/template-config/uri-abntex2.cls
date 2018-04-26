@@ -354,14 +354,14 @@
             }
             \abntex@ifnotempty{\imprimirorientador}
             {%
-                & \small\imprimirorientadorRotulo & \imprimirorientador \\
-                & & \small\imprimirinstOrientador \\ & & \\
+                & \bfseries\small\imprimirorientadorRotulo & \imprimirorientador                 
             }
-            \abntex@ifnotempty{\imprimircoorientador}
-            {%
-                & \small\imprimircoorientadorRotulo & \imprimircoorientador \\
-                & & \small\imprimirinstCoorientador
-            }
+            % O campo para coorientador foi comentando
+            % \abntex@ifnotempty{\imprimircoorientador}
+            % {%
+            %     & \small\imprimircoorientadorRotulo & \imprimircoorientador \\
+            %     & & \small\imprimirinstCoorientador
+            % }
         \end{tabular}
     }
 

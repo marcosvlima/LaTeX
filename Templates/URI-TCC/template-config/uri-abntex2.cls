@@ -33,7 +33,7 @@
 % Opções da classe memoir
     12pt,                     % Tamanho da fonte
     a4paper,                  % Tamanho do papel.
-    sumario=tradicional,      % Seleciona o sumário tradicional
+    % sumario=tradicional,      % Seleciona o sumário tradicional
 % Opções do pacote babel
     brazil,                   % Idioma do documento
 }{abntex2}

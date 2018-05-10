@@ -212,14 +212,14 @@
 % Redefinição de fontes
 % Para aleterar o tipo de fonte coloque \fontfamily{ptm}
 % Setado times como fonte para títulos
-\renewcommand{\ABNTEXchapterfont}{\normalfont\bfseries}
-\renewcommand{\ABNTEXchapterfontsize}{\normalsize}
+\renewcommand{\ABNTEXchapterfont}{\normalfont}
+\renewcommand{\ABNTEXchapterfontsize}{\normalsize\bfseries}
 
 \renewcommand{\ABNTEXpartfont}{\normalfont}
 \renewcommand{\ABNTEXpartfontsize}{\ABNTEXchapterfontsize}
 
 \renewcommand{\ABNTEXsectionfont}{\normalfont}
-\renewcommand{\ABNTEXsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize\bfseries}
 
 \renewcommand{\ABNTEXsubsectionfont}{\normalfont}
 \renewcommand{\ABNTEXsubsectionfontsize}{\normalsize}

@@ -234,7 +234,7 @@
 % -----------------------------------------------------------------------------
 
 % Travessão no sumário para apêndices e anexos
-\renewcommand{\cftchapteraftersnum}{\hfill\textendash\hfill}
+% \renewcommand{\cftchapteraftersnum}{\hfill\textendash\hfill}
 
 % Insere espaço entre os itens do sumário de diferentes capítulos
 \setlength{\cftbeforechapterskip}{1.0em \@plus\p@}

@@ -278,7 +278,7 @@
     \begin{capa}
         \begin{center}
 		\begin{OnehalfSpace}
-            		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirinstituicao} \\
+            		\ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirinstituicao} \\
 	    		\abntex@ifnotempty{\imprimirdepartamento}
             		{
                 		\MakeUppercase{\imprimirdepartamento} \\
@@ -288,11 +288,11 @@
         \end{center}
         \vspace{70pt}
 	\begin{center}
-		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirautor}\\
+		\ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirautor}\\
 	\end{center}
 	\vspace{140pt}
         \begin{center}
-            \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirtitulo}
+            \ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirtitulo}
             \abntex@ifnotempty{\imprimirsubtitulo}
 	    {%
                 {\ABNTEXchapterfont: }{\normalsize{\imprimirsubtitulo}}
@@ -306,8 +306,8 @@
 	\vfill
         \begin{center}
 		\begin{OnehalfSpace}
-            		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirlocal}\\
-            		\ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirdata}
+            		\ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirlocal}\\
+            		\ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirdata}
 		\end{OnehalfSpace}
     	\end{center}
 
@@ -324,13 +324,13 @@
 {%
     \setcounter{page}{2}
     \begin{center}
-        \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirautor}\\
+        \ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirautor}\\
     \end{center}
 
     \vspace*{225pt}
 
     \begin{center}
-        \ABNTEXchapterfont\normalsize\MakeUppercase{\imprimirtitulo}
+        \ABNTEXchapterfont\normalsize\bfseries\MakeUppercase{\imprimirtitulo}
         \abntex@ifnotempty{\imprimirsubtitulo}
 	{%
         	{\ABNTEXchapterfont: }{\normalsize{\imprimirsubtitulo}}

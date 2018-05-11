@@ -162,7 +162,7 @@
 \renewcommand{\textual}
 {%
     \pagenumbering{arabic} % A numeração das páginas é em algarismos arábicos, inciando em 1
-    \pagestyle{abntheadings}
+    \pagestyle{simple}
     \aliaspagestyle{chapter}{abntchapfirst}
     \nouppercaseheads
     \bookmarksetup{startatroot}

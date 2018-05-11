@@ -228,7 +228,7 @@
 \renewcommand{\ABNTEXsubsubsectionfontsize}{\normalsize}
 
 \renewcommand{\ABNTEXsubsubsubsectionfont}{\normalfont}
-\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\normalsize\itshape}
 % -----------------------------------------------------------------------------
 % Sumário
 % -----------------------------------------------------------------------------

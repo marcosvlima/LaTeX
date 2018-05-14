@@ -261,7 +261,10 @@
     \renewcommand{\subsectionautorefname}{Subse\c{c}\~ao}
     \renewcommand{\subsubsectionautorefname}{Subsubse\c{c}\~ao}
     \renewcommand{\paragraphautorefname}{Subse\c{c}\~ao}
+% Ajusta nome da Referências para REFERÊNCIAS
+    \renewcommand{\bibname}{REFERÊNCIAS}
 }
+
 
 % Cria a lista de quadros
 \newcommand{\listofquadrosname}{Lista de Quadros}

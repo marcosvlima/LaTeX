@@ -90,6 +90,10 @@
 % Comandos de dados
 % -----------------------------------------------------------------------------
 
+% Comandos de dados - Disciplina
+\providecommand{\imprimirdisciplina}{}
+\newcommand{\disciplina}[1]{\renewcommand{\imprimirdisciplina}{#1}}
+
 % Comandos de dados - Departamento
 \providecommand{\imprimirdepartamento}{}
 \newcommand{\departamento}[1]{\renewcommand{\imprimirdepartamento}{#1}}

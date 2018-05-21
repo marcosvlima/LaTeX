@@ -24,7 +24,7 @@
 % -----------------------------------------------------------------------------
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{configuracoes/utfpr-abntex2}[2016/07/07 v1.0]
+\ProvidesClass{configuracoes/uri-abntex2}[2018/05/04 v1.0]
 
 % Repassa os parâmetros ao abntex2
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{abntex2}}

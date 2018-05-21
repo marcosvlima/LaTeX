@@ -3,31 +3,26 @@
 \chapter{INTRODUÇÃO}
 \label{chap:introducao}
 
-Edite e coloque aqui o seu texto de introdução.
+\LaTeX \xspace é um conjunto de macros de alto nível para \TeX \xspace que torna mais fácil e rápida a produção de todo o tipo de documentos como, por exemplo, livros, relatórios e artigos.
 
-A Introdução é a parte inicial do texto, na qual devem constar o tema e a delimitação do assunto tratado, objetivos da pesquisa e outros elementos necessários para situar o tema do trabalho, tais como: justificativa, procedimentos metodológicos (classificação inicial), embasamento teórico (principais bases sintetizadas) e estrutura do trabalho, tratados de forma sucinta. Recursos utilizados e cronograma são incluídos quando necessário. Salienta-se que os procedimentos metodológicos e o embasamento teórico são tratados, posteriormente, em capítulos próprios e com a profundidade necessária ao trabalho de pesquisa.
+O objetivo do \LaTeX \xspace é que o autor se possa distanciar da apresentação visual do trabalho e assim se concentrar no seu conteúdo. Possui formas de lidar com bibliografias, citações, formatos de páginas, referências e tudo mais que não seja relacionado com conteúdo do documento em si.
 
-\section{Leia Está seção Antes de Começar}
-\label{sec:antesleiame}
+\section{Histórico}
+\label{sec:Histórico}
 
-Este documento é um \emph{template} \LaTeX{} que foi concebido, primariamente, para ser utilizado na elaboração de Trabalho de Conclusão de Curs em conformidade com as normas da Universidade Tecnológica Federal do Paraná.
+Em 1978 Donald E. Knuth começou a desenvolver uma linguagem cujo objetivo era permitir a qualquer um formatar textos com muitas equações e com alta qualidade de saída, chamada de \TeX. Em 1985 Leisle Lamport desenvolveu um conjunto de macros denominado \LaTeX \xspace, que simplifica o uso da linguagem \TeX \xspace. Atualmente este projeto é mantido e desenvolvido pelo \LaTeX3 \xspace Project
 
-Para a produção deste \emph{template} foi necessário adaptar o arquivo {\ttfamily abntex2.cls}. Assim, foi produzido o arquivo {\ttfamily utfpr-abntex2.cls} que define o \verb|documentclass| específico para a UTFPR.
+O som final dos nomes \TeX \xspace e \LaTeX \xspace deve ser pronunciado como se fosse um “K”.
 
-Com bases nessas alterações sugiu as modificações para o \emph{template} não oficial da Universidade Regional Integrada do Alto Uruguai e das Missões (URI). Para estas alterações foi modificado o arquivo {\ttfamily utfpr-abntex2.cls} pra {\ttfamily uri-abntex2.cls} contendo as modificações necessárias para apresentação de trabalhos acadêmicos da Instituição. 
+\section{Instalação}
+\label{sec:Instalação}
 
-\subsection{Isso é um teste}
-\label{subsec:teste}
+\LaTeX é um software livre e gratuito, é possível instalar nos  principais sistemas operacionais modernos como: Windows 7, 8, 8.1 e 10; Mac OS e várias distribuições Linux.
 
-Antes de começar a escrever o seu trabalho acadêmico utilizando este \emph{template}, é importante saber que há dois arquivos que você precisará editar para que a capa e a folha de rosto de seu trabalho sejam geradas automaticamente.
-São eles os arquivos {\ttfamily capa.tex} e {\ttfamily folha-rosto.tex}, ambos no diretório  {\ttfamily /elementos-pre-textuais}.
-No arquivo {\ttfamily capa.tex} deverá ser informado nome do autor, título do trabalho, natureza do trabalho, nome do orientador e outras informações necessárias.
-No arquivo {\ttfamily folha-rosto.tex}, que contém o texto padrão estabelecendo que este documento é um requisito parcial para a obtenção do título pretendido, será necessário apenas comentar as linhas que não se aplicam ao tipo de trabalho acadêmico.
+\subsection{Windows}
 
-A compilação para gerar um arquivo no formato pdf, incluindo corretamente as referências bibliográficas, deve ser realizada utilizando o comando \verb|makefile|, disponível na mesma pasta onde está o arquivo principal \verb|uri-tcc.tex|. Caso seja alterado o nome do arquivo \verb|uri-tcc.tex|, deverá ser alterado no arquivo \verb|makefile| também.
+MiKTeX é uma distribuição TeX / LaTeX para o Microsoft Windows. Baixe o instalador pelo link oficial: \href{https://miktex.org/download}{\textcolor{blue}{Download MiKTeX}}
 
-\section{ORGANIZAÇÃO DO TRABALHO}
-\label{sec:organizacaoTrabalho}
+A instalação do MiKTeX é simples, basicamente é só clicar no “Avançar”. Caso houver problemas na instalação o seguinte vídeo poderá servir de ajuda: \href{https://www.youtube.com/watch?v=4udFXbqtayE&list=LLQVoeslEpxQJ0UavpXUEkq}{\textcolor{blue}{Vídeo Instalação MiKTeX}}. Junto com a instalação do MiKTeX o editor TeXworks é instalado. Existem outros editores como o Texmaker. O Texmaker é mais simples de usar e é o editor de código aberto mais popular entre a comunidade LaTeX.
 
-Normalmente ao final da introdução é apresentada, em um ou dois parágrafos curtos, a organização do restante do trabalho acadêmico.
-Deve-se dizer o quê será apresentado em cada um dos demais capítulos.
+O Texmaker é um editor LaTeX livre, moderno e multiplataforma para sistemas Linux, Macosx e Windows que integra muitas ferramentas necessárias para desenvolver documentos com o LaTeX. Baixe o instalador pelo link oficial: \href{http://www.xm1math.net/texmaker/download.html}{\textcolor{blue}{Download TeXMaker}}  

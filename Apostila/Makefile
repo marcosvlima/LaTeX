@@ -1,10 +1,12 @@
 #----------------------------------------------------------------------------
-# Makefile Apostila LaTeX
-#----------------------------------------------------------------------------
+# # Makefile da Customização da Classe abnTeX2 para as normas da URI
+#
+# Projeto baseado no template da UFTPR http://tcc.tsi.gp.utfpr.edu.br/paginas/modelos-latex-da-utfpr
+#-----------------------------------------------------------------------------
 
 # Definindo as variáveis
 
-SOURCE      = apostila
+SOURCE      = uri-tcc
 LATEX       = pdflatex
 LATEXMK     = latexmk
 BIBTEX      = bibtex

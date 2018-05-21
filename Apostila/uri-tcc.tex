@@ -1,0 +1,64 @@
+% ---------------------------------------------------------------------------------------------------------------
+% TEMPLATE EM LATEX PARA TRABALHO DE CONCLUSÃO DE CURSO DA URI ERECHIM
+% (ESTE TEMPLATE NÃO É UM PROJETO OFICIAL DA URI) CONSULTE SEU ORIETADOR CASO QUEIRA UTILIZA-LO
+% Este template foi baseado no template da Universidade Tecnológica Federal do Paraná UTFPR
+%
+% Template baseado no projeto: http://tcc.tsi.gp.utfpr.edu.br/paginas/modelos-latex-da-utfpr
+%
+%----------------------------------------------------------------------------------------------------------------
+% Codificação: UTF-8
+% LaTeX:  abnTeX2
+% ---------------------------------------------------------------------------------------------------------------
+
+
+% CARREGA CLASSE PERSONALIZADA COM AS NORMAS DA URI-----------------------------------------------------------
+\documentclass[oneside]{template-config/uri-abntex2} %oneside -> impressão apenas frente
+
+% INCLUI ARQUIVOS DE CONFIGURAÇÕES-------------------------------------------------------------------------------
+\include{template-config/pacotes}
+\include{template-config/configuracoes-pdf}
+
+
+% INCLUI ARQUIVOS DO TRABALHO DE CONCLUSÃO DE CURSO (PRÉ-TEXTUAIS, TEXTUAIS, PÓS-TEXTUAIS)-----------------------
+
+% INSERE CAPA E FOLHA DE ROSTO
+\include{text-elements/pre-textuais/capa}
+\include{text-elements/pre-textuais/folha-rosto}
+% \include{text-elements/pre-textuais/folha-aprovação}
+
+\begin{document}
+
+\pretextual
+\imprimircapa                                               	           % Comando para imprimir Capa
+\imprimirfolhaderosto{}                                     		   % Comando para imprimir Folha de rosto
+% \imprimirfolhadeaprovacao
+% INSERE ELEMENTOS PRÉ-TEXTUAIS
+\include{text-elements/pre-textuais/dedicatoria}          			   % Dedicatória
+\include{text-elements/pre-textuais/agradecimentos}        			   % Agradecimentos
+\include{text-elements/pre-textuais/epigrafe}              			   % Epígrafe
+\include{text-elements/pre-textuais/resumo}             			   % Resumo em Português
+\include{text-elements/pre-textuais/abstract}             		           % Resumo em Inglês
+\include{text-elements/pre-textuais/listas/listas-ilustracoes/lista-figuras}   % Lista de Figuras
+\include{text-elements/pre-textuais/listas/listas-ilustracoes/lista-quadros}   % Lista de Quadros
+\include{text-elements/pre-textuais/listas/lista-tabelas}         		   % Lista de Tabelas
+\include{text-elements/pre-textuais/listas/lista-siglas}          		   % Lista de Abreviaturas e Siglas
+\include{text-elements/pre-textuais/listas/lista-simbolos}        		   % Lista de Símbolos
+\include{text-elements/pre-textuais/listas/listas-diversas/lista-algoritmos}   % Lista de Algoritmos
+\include{text-elements/pre-textuais/sumario}               			   % Sumário
+
+\textual
+% INSERE ELEMENTOS TEXTUAIS
+\include{text-elements/textuais/introducao}                		           % Introdução
+\include{text-elements/textuais/desenvolvimento/revisao-de-literatura}         % Revisão de Literatura
+\include{text-elements/textuais/desenvolvimento/metodologia}                   % Metodologia
+\include{text-elements/textuais/desenvolvimento/resultados}                    % Resultados
+\include{text-elements/textuais/desenvolvimento/orientacoes}                   % Capítulo com Orientações de uso do Template
+\include{text-elements/textuais/conclusao}                 			   % Conclusão
+
+\postextual
+% INSERE ELEMENTOS PÓS-TEXTUAIS
+\include{text-elements/pos-textuais/referencias}           			   % Referências
+\include{text-elements/pos-textuais/apendices}             			   % Apêndices
+\include{text-elements/pos-textuais/anexos}               			   % Anexos
+
+\end{document}

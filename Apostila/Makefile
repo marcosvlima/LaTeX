@@ -6,7 +6,7 @@
 
 # Definindo as variáveis
 
-SOURCE      = uri-tcc
+SOURCE      = apostila
 LATEX       = pdflatex
 LATEXMK     = latexmk
 BIBTEX      = bibtex

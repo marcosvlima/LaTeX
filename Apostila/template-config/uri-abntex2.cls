@@ -12,19 +12,14 @@
 %% Further information about abnTeX2 are available on http://www.abntex.net.br/
 %%------------------------------------------------------------------------------
 
-
-% -----------------------------------------------------------------------------
-% Customização da classe abnTeX2 (http://www.abntex.net.br/) para as normas da URI
-%
-% Estas Modificações tiveram como base o projeto da UTFPR http://tcc.tsi.gp.utfpr.edu.br/paginas/modelos-latex-da-utfpr
-%
 %------------------------------------------------------------------------------
+% Apostila LaTeX
 % Codificação: UTF-8
 % LaTeX:  abnTeX2
 % -----------------------------------------------------------------------------
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{configuracoes/utfpr-abntex2}[2016/07/07 v1.0]
+\ProvidesClass{configuracoes/uri-abntex2}[2016/07/07 v1.0]
 
 % Repassa os parâmetros ao abntex2
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{abntex2}}

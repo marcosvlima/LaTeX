@@ -1,7 +1,5 @@
 #----------------------------------------------------------------------------
-# # Makefile da Customização da Classe abnTeX2 para as normas da URI
-#
-# Projeto baseado no template da UFTPR http://tcc.tsi.gp.utfpr.edu.br/paginas/modelos-latex-da-utfpr
+# Apostila LaTeX
 #-----------------------------------------------------------------------------
 
 # Definindo as variáveis

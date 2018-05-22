@@ -31,11 +31,60 @@ O Texmaker é mais simples de usar e é o editor de código aberto mais popular 
 
 O TeX Live é uma distribuição para produção de documentos \TeX \xspace. Para instalar no ubuntu 16.04 digite o seguinte comando: 
 \begin{lstlisting}[language=bash]
-  $ sudo apt-get install texlive-full
+    $ sudo apt-get install texlive-full
 \end{lstlisting}
 
 Apos a instalação do TeX Live pode-se obtar por instalar um editor específico para LaTeX o Texmaker, para instalar digite o seguinte comando: 
 
 \begin{lstlisting}[language=bash]
-  $ sudo apt-get install texmaker
+    $ sudo apt-get install texmaker
 \end{lstlisting}
+
+\section{Compilação Tex Maker}
+
+Para Compilar o arquivo \emph{.tex} junto com o arquivo \emph{.bib} no TeX Maker é necessário uma configuração, como mostra as Figuras \ref{fig:texmaker-config1} e \ref{fig:texmaker-config2}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Configuração Tex Maker}
+    \includegraphics[width=0.70\textwidth]{./dados/figuras/compiler1}
+    \fonte{Autor}
+    \label{fig:texmaker-config1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Configuração Tex Maker 2}
+    \includegraphics[width=0.70\textwidth]{./dados/figuras/compiler2}
+    \fonte{Autor}
+    \label{fig:texmaker-config2}
+\end{figure}
+
+\section{Compilação por Linha de Comando}
+
+Para compilar pela linha de comando (windows e Linux) deve-se fazer os seguintes passos:
+
+\begin{enumerate}
+    \item Compilar o arquivo principal \emph{.tex}:
+    \begin{lstlisting}[language=bash]
+        pdflatex apostila.tex
+    \end{lstlisting}
+    \item Montar os índices:
+    \begin{lstlisting}[language=bash]
+        makeindex apostila.idx
+    \end{lstlisting}
+    \item Compilar o arquivo das bibliografias \emph{.bib}
+    \begin{lstlisting}[language=bash]
+        bibtex apostila.aux
+    \end{lstlisting}
+    \item Por fim, gerar o PDF:
+    \begin{lstlisting}[language=bash]
+        pdflatex apostila.tex
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Ferramentas em Nuvem}
+
+Existem ferramentas que possibilitam a edição e a colaboração online de documentos LaTeX. Uma dessas ferramentas é o \href{https://www.overleaf.com/}{\textcolor{blue}{Overleaf}}.
+
+Para usar o Overleaf basta criar uma conta, começar um projeto e escrever. Uma outra grande vantagem do Overleaf é a comunidade que compartilha templates prontos, como por exemplo:  \href{https://www.overleaf.com/latex/templates}{\textcolor{blue}{principais templates}}. 

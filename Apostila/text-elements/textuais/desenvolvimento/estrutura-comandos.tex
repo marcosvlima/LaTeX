@@ -3,3 +3,40 @@
 \chapter{ESTRUTURA E COMANDOS}
 \label{chap:estruturaecomandos}
 
+Um documento em \LaTeX{} começa pelo comando \verb|\documentclass[opcionais]{classe}|.
+Abaixo desse comando são declarados os pacotes e outras configurações do documento.
+
+Os comandos \verb|\begin{document}| e \verb|\end{document}| marcam o início do ambiente onde por exemplo,
+as seções, subseções e o texto do documento serão inseridos. 
+O seguinte trecho de código exemplifica a estrutura básica de um documento em \LaTeX.
+
+\begin{verbatim}
+\documentclass[opcionais]{classe}
+
+    % declarações
+
+\begin{document}
+
+    % documento
+
+\end{document}
+\end{verbatim}
+
+As principais\footnote{pode se encontrar encontrar outros parâmetros para classes e opções nesse link:
+\href{https://en.wikibooks.org/wiki/LaTeX/Document_Structure}{\textcolor{blue}{Classes e Opções}}} 
+classes que podem ser passadas para o comando \verb|\documentclass| são:\\
+
+\begin{itemize}
+    \item \{article\} - para produzir artigos curtos;
+    \item \{report\} - para produzir artigos mais longos, relatórios e monografias;
+    \item \{book\} - para produzir livros.\\
+\end{itemize}
+
+Nas opções é possível utilizar os seguintes parâmetros:\\
+
+\begin{itemize}
+    \item 11pt - fonte de 11 pontos;
+    \item 12pt - fonte de 12 pontos;
+    \item twoside - imprime em ambos os lados da folha;
+    \item twocolumn - produz o documento formatado em duas colunas;
+\end{itemize}

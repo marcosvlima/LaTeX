@@ -1,0 +1,28 @@
+% SIMBOLOS E ACENTUAÇÃO-------------------------------------------------------------------
+
+\chapter{SIMBOLOS E ACENTUAÇÃO}
+
+\TeX{} usa ASCII por padrão. Mas para que acentos e outros caracteres especiais apareçam diretamente no arquivo de origem,
+deve-se dizer ao \TeX{} usar uma codificação diferente.
+
+
+\LaTeX{} suporta a composição de caracteres especiais.
+Isto é conveniente se o seu teclado não tiver alguns acentos desejados e outros diacríticos.
+
+Os seguintes acentos podem ser colocados em letras.
+Embora a letra 'o' seja usada na maioria dos exemplos, os acentos podem ser colocados em qualquer letra.
+Os acentos podem até ser colocados acima de uma letra “ausente”; por exemplo, \verb|\ ~ {}| produz um til sobre um espaço em branco.
+
+Para que a acentuação ocorra de forma automática deve-se usar os seguintes pacotes:
+
+\begin{verbatim}
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\end{verbatim}
+
+LaTeX tem muitos símbolos à sua disposição.
+A maioria deles está no domínio matemático e os capítulos posteriores abordarão como obter acesso a eles.
+Para os símbolos de texto mais comuns, use os seguintes comandos:
+
+\input{./dados/quadros/quadro-simbolos-especiais}

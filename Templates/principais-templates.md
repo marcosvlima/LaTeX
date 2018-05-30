@@ -2,6 +2,10 @@
 
 Aqui estão reunidos os principais templates e as fontes que os mesmos foram retirados.
 
+## Projeto/Trabalho de Conclusão de Curso (PCC/TCC)
+
+[URI-TCC](/Templates/URI-TCC)
+
 ## Sociedade Brasileira de Computação
 
 [SBC Artigos](https://www.overleaf.com/latex/templates/sbc-conferences-template/blbxwjwzdngr) 

@@ -26,3 +26,14 @@ seja relacionado com conteúdo do documento em si.
 Existem ferramentas que possibilitam a edição e a colaboração online de documentos LaTeX. Uma dessas ferramentas é o [Overleaf](https://www.overleaf.com/).
 
 Para usar o Overleaf basta criar uma conta, começar um projeto e escrever. Uma outra grande vantagem do Overleaf é a comunidade que compartilha templates prontos, como por exemplo: [principais templates](Templates/principais-templates.md).
+
+## Apostila LaTeX
+
+Apostila com os principais comandos para utilizar em seu documento LaTeX
+
+Pode se optar por [baixar todo o projeto](/Apostila) ou apenas o [pdf já compilado](/Apostila/apostila.pdf).
+
+## Templates
+
+Para ter acesso há alguns templates em LaTeX incluindo o template não oficial de TCC da URI acesse esse link: [templates](/Templates/principais-templates.md)
+

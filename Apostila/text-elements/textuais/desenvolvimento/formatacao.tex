@@ -1,0 +1,53 @@
+
+\chapter{FORMATAÇÃO DO TEXTO}
+
+Existem vários comandos em \LaTeX{} para definir vários estilos de texto como: alinhamento, negrito, itálico etc.
+
+\section{Comandos de Estilo de Texto}
+
+É possível definir o estilo de um texto e juntar comandos com declarações.
+Os comandos produzem seu efeito somente sobre seu argumento.
+Comandos e/ou declarações podem ser acumulados: \verb|\textbf{\itshape negrito e itálico}| produz \textbf{\itshape negrito e itálico}.
+
+Os principais comandos e declarações são apresentados a seguir:
+
+\input{./dados/quadros/quadro-comandos-texto}
+
+\section{Alinhamento}
+
+Por padrão todo texto em \LaTeX{} já está justificado.\\
+
+Para centralizar um texto pode-se usar:
+
+\begin{verbatim}
+\begin{center}
+    % Texto Centralizado
+\end{center}
+\end{verbatim}
+
+Para alinhar o texto à direita:
+
+\begin{verbatim}
+\begin{flushleft}
+    % Texto Alinhado à Esquerda
+\end{flushleft}
+\end{verbatim}
+
+Para alinhar o texto à esquerda:
+
+\begin{verbatim}
+\begin{flushright}
+    % Texto Alinhado à Direita
+\end{flushright}
+\end{verbatim}
+
+\section{Espaçamento}
+
+No LaTeX existem alguns tipos de espaçamentos, como: \\
+
+ \begin{itemize}
+    \item Espaçamento simples \verb|\space{}|
+    \item Espaçamento Vertical: \verb|\vspace{espaço}|
+    \item Espaçamento Horizontal: \verb|\hspace{espaço}|
+\end{itemize}
+

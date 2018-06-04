@@ -21,7 +21,9 @@ Para delimitar os espaços das colunas e suas respectivas divisões, os símbolo
 
 \input{./dados/quadros/colunas}
 
-Por fim, existem alguns símbolos que precisamos utilizar para delimitar e formatar as informações contidas dentro das tabelas, conforme o Quadro mostra.
+Por fim, existem alguns símbolos que precisamos utilizar para delimitar e formatar as informações contidas dentro das tabelas, conforme o \autoref{qua:quadro-dados} mostra.
+
+\input{./dados/quadros/dados}
 
 A diferença entre quadro e tabela está no fato que um quadro é formado por linhas horizontais e verticais. Deve ser utilizado quando o conteúdo é majoritariamente não-numérico. O número do quadro e o título vem acima do quadro, e a fonte, deve vir abaixo. E Uma tabela é formada apenas por linhas verticais. Deve ser utilizada quando o conteúdo é majoritariamente numérico. O número da tabela e o título vem acima da tabela, e a fonte, deve vir abaixo, tal como no quadro.
 
@@ -37,7 +39,7 @@ Referências cruzadas são obtidas através dos comandos \verb|\label{}| e \verb
 \chapter{FIGURAS}
 \label{chap:figuras}
 
-Exemplo de como inserir uma figura. A \autoref{fig:figura-exemplo1} aparece automaticamente na lista de figuras. Para saber mais sobre o uso de imagens no \LaTeX{} consulte literatura especializada \cite{Goossens2007}.
+Exemplo de como inserir uma figura. A \autoref{fig:figura-exemplo1} aparece automaticamente na lista de figuras. Para saber mais sobre o uso de imagens no \LaTeX{} consulte literatura especializada \cite{Goossens2007}. Para posicionamento da figura, utilizamos também os \textit{floats}. Para isso, confira o \autoref{qua:quadro-floats}.
 
 Os arquivos das figuras devem ser armazenados no diretório de "/dados".
 
@@ -53,7 +55,39 @@ Os arquivos das figuras devem ser armazenados no diretório de "/dados".
 \chapter{EQUAÇÕES}
 \label{chap:equacoes}
 
-Exemplo de como inserir a \autoref{eq:equacao-exemplo1} e a Eq. \ref{eq:equacao-exemplo2} no corpo do texto \footnote{Deve-se atentar ao fato de a formatação das equações ficar muito boa esteticamente.}. Observe que foram utilizadas duas formas distintas para referenciar as equações.
+Exemplo de como inserir equações no corpo do texto \footnote{Deve-se atentar ao fato de a formatação das equações ficar muito boa esteticamente.}. Para adicionar uma equação inline, há três formas: 
+
+\verb|\(E=mc^2\)| - Usando parênteses \verb|\(\)| = \(E=mc^2\)
+
+\verb|$E=mc^2$| - Usando 1 cifrão antes e 1 depois = $E=mc^2$
+
+Com a área math.
+\begin{verbatim}
+    \begin{math}
+    E=mc^2
+    \end{math}
+\end{verbatim}
+
+\begin{math}
+    E=mc^2
+\end{math}
+
+Para adicionar uma equação display, há três formas:
+
+\verb|\[E=mc^2\]| - Usando colchetes \verb|\[\]|
+\[E=mc^2\]
+
+\verb|$$E=mc^2$$| - Usando 2 cifrões antes e 2 depois
+$$E=mc^2$$
+
+E com o uso do ambiente \textit{equation} do pacote \textit{amsmath}.
+
+\begin{verbatim}
+    \begin{equation}
+    X(s) = \int\limits_{t = -\infty}^{\infty} x(t) \, \text{e}^{-st} \, dt
+    \label{eq:equacao-exemplo1}
+    \end{equation}
+\end{verbatim}
 
 \begin{equation}
     X(s) = \int\limits_{t = -\infty}^{\infty} x(t) \, \text{e}^{-st} \, dt

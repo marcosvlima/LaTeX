@@ -1,0 +1,86 @@
+ BODY         { background-color: white;
+               font-family: serif, times; 
+             }
+.title       { font-family: sans-serif, arial, helvetica; 
+               font-style: bold;
+               font-weight: 900;  
+               font-size: x-large;
+               color: #000000;
+             }
+.heading1    { font-family: sans-serif, arial, helvetica; 
+               font-style: normal; 
+               font-weight: 900;  
+               font-size: large;
+               color: #000000;
+             }
+.heading2    { font-family: sans-serif, arial, helvetica; 
+               font-style: normal; 
+               font-weight: 900;  
+               font-size: large;
+               color: #000000;
+             }
+.heading3    { font-family: sans-serif, arial, helvetica; 
+               font-style: normal; 
+               font-weight: bold;  
+             }
+.emphasis    { font-family: serif, times; 
+               font-style: italic; 
+               font-weight: bold;  
+             }
+.footer      { font-family: sans-serif, arial, helvetica; 
+               font-size: 8pt;
+             }
+.menu1       { font-family: sans-serif, arial, helvetica; 
+               font-size: 10pt;
+             }
+.cmd         { font-family: courier;
+               font-size: 12pt;
+               font-weight: bold;  
+               background-color:#EEEEEE;
+             }
+.file        { font-family: courier;
+               font-size: 12pt;
+               font-weight: bold;  
+             }
+H1           { font-family: sans-serif, arial, helvetica; 
+               color: #000000;
+             }
+H2           { font-family: sans-serif, arial, helvetica; 
+               font-weight: 900;  
+               font-size: large;
+               color: #000000;
+             }
+H3           { font-family: sans-serif, arial, helvetica; 
+               color: #000000;
+             }
+TH           { font-family: sans-serif, arial, helvetica;
+               background-color: #98ABCE;
+               text-align: center;TT
+             }
+TT           { font-family: courier, serif;
+               font-size: 12pt;
+               font-weight: bold;  
+             }
+PRE          { font-family: courier, serif;
+               font-size: 12pt;
+               font-weight: bold;  
+             }
+A:link       {
+              color: #333399;
+              text-decoration: underline;
+             }
+A:hover      {
+              color: #333399;
+              text-decoration: underline;
+              background: #DDDDDD;
+             }
+A:active     {
+              color: #333399;
+              text-decoration: underline;
+             }
+A:visited    {
+              color: #333399;
+              text-decoration: underline;
+             }
+
+

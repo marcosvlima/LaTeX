@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://blog.golang.org/pipelines -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width">
+	<meta name="theme-color" content="#375EAB">
+	<title>Go Concurrency Patterns: Pipelines and cancellation - The Go Blog</title>
+	<link type="text/css" rel="stylesheet" href="./ajmani2014_files/style.css">
+	<link type="text/css" rel="stylesheet" href="./ajmani2014_files/fonts.css">
+	<link rel="alternate" type="application/atom+xml" title="blog.golang.org - Atom Feed" href="https://blog.golang.org/feed.atom">
+	<script type="text/javascript" async="" src="./ajmani2014_files/ga.js"></script><script type="text/javascript">window.initFuncs = [];</script>
+	<style>
+		#sidebar {
+			float: right;
+			padding-left: 20px;
+			width: 40%;
+			max-width: 250px;
+			background: #F3F3F3;
+			margin: 20px 0 20px 20px;
+		}
+		#sidebar ul {
+			padding: 0;
+		}
+		#sidebar li {
+			list-style-type: none;
+		}
+		#content .author {
+			font-style: italic;
+		}
+		#content .article {
+			margin-bottom: 50px;
+		}
+		#content .date {
+			color: #999;
+		}
+		#content .tags {
+			color: #999;
+			font-size: smaller;
+		}
+		#content .iframe, #content .image {
+			margin: 20px;
+		}
+		#content .title {
+			margin: 20px 0;
+		}
+		#content img {
+			max-width: 100%;
+		}
+		.article[data-slug='/go-fonts'] {
+			font-family: Go, sans-serif;
+		}
+		.article[data-slug='/go-fonts'] pre,
+		.article[data-slug='/go-fonts'] code {
+			font-family: Go Mono, monospace;
+		}
+	</style>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(["_setAccount", "UA-11222381-3"]);
+_gaq.push(["b._setAccount", "UA-49880327-6"]);
+window.trackPageview = function() {
+  _gaq.push(["_trackPageview", location.pathname+location.hash]);
+  _gaq.push(["b._trackPageview", location.pathname+location.hash]);
+};
+window.trackPageview();
+window.trackEvent = function(category, action, opt_label, opt_value, opt_noninteraction) {
+  _gaq.push(["_trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+  _gaq.push(["b._trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+};
+</script>
+</head>
+<body>
+
+<div id="topbar"><div class="container">
+
+<div class="top-heading" id="heading-wide"><a href="https://golang.org/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="https://golang.org/">Go</a></div>
+<a href="https://blog.golang.org/pipelines#" id="menu-button"><span id="menu-button-arrow">▽</span></a>
+<form method="GET" action="https://golang.org/search">
+<div id="menu">
+<a href="https://golang.org/doc/">Documents</a>
+<a href="https://golang.org/pkg/">Packages</a>
+<a href="https://golang.org/project/">The Project</a>
+<a href="https://golang.org/help/">Help</a>
+<a href="https://blog.golang.org/">Blog</a>
+<input type="text" id="search" name="q" class="inactive" value="Search" placeholder="Search">
+</div>
+</form>
+
+</div></div>
+
+<div id="page" tabindex="-1" style="outline: 0px;">
+<div class="container">
+
+<div id="sidebar">
+	
+		
+			<h4>Next article</h4>
+			<p><a href="https://blog.golang.org/gopher">The Go Gopher</a></p>
+		
+		
+		
+			<h4>Previous article</h4>
+			<p><a href="https://blog.golang.org/fosdem14">Go talks at FOSDEM 2014</a></p>
+		
+	
+	
+	<h4>Links</h4>
+	<ul>
+	<li><a href="https://golang.org/">golang.org</a></li>
+	<li><a href="https://golang.org/doc/install.html">Install Go</a></li>
+	<li><a href="https://tour.golang.org/">A Tour of Go</a></li>
+	<li><a href="https://golang.org/doc/">Go Documentation</a></li>
+	<li><a href="https://groups.google.com/group/golang-nuts">Go Mailing List</a></li>
+	<li><a href="https://plus.google.com/101406623878176903605">Go on Google+</a></li>
+	<li><a href="https://plus.google.com/112164155169467723645/posts">Go+ Community</a></li>
+	<li><a href="https://twitter.com/golang">Go on Twitter</a></li>
+	</ul>
+	
+	<p><a href="https://blog.golang.org/index">Blog index</a></p>
+</div>
+
+<div id="content">
+	<h1><a href="https://blog.golang.org/">The Go Blog</a></h1>
+	
+	
+	<div class="article" data-slug="/pipelines">
+		<h3 class="title"><a href="https://blog.golang.org/pipelines">Go Concurrency Patterns: Pipelines and cancellation</a></h3>
+		<p class="date">13 March 2014</p>
+		
+
+  
+  
+    
+      
+  <h4 id="TOC_1.">Introduction</h4>
+  
+  
+  <p>
+    Go's concurrency primitives make it easy to construct streaming data pipelines
+
+
+    that make efficient use of I/O and multiple CPUs.  This article presents
+
+
+    examples of such pipelines, highlights subtleties that arise when operations
+
+
+    fail, and introduces techniques for dealing with failures cleanly.
+  </p>
+  
+
+
+    
+      
+  <h4 id="TOC_2.">What is a pipeline?</h4>
+  
+  
+  <p>
+    There's no formal definition of a pipeline in Go; it's just one of many kinds of
+
+
+    concurrent programs.  Informally, a pipeline is a series of <i>stages</i> connected
+
+
+    by channels, where each stage is a group of goroutines running the same
+
+
+    function.  In each stage, the goroutines
+  </p>
+  
+
+  <ul>
+  
+    <li>receive values from <i>upstream</i> via <i>inbound</i> channels</li>
+  
+    <li>perform some function on that data, usually producing new values</li>
+  
+    <li>send values <i>downstream</i> via <i>outbound</i> channels</li>
+  
+  </ul>
+
+  
+  <p>
+    Each stage has any number of inbound and outbound channels, except the
+
+
+    first and last stages, which have only outbound or inbound channels,
+
+
+    respectively.  The first stage is sometimes called the <i>source</i> or
+
+
+    <i>producer</i>; the last stage, the <i>sink</i> or <i>consumer</i>.
+  </p>
+  
+
+  
+  <p>
+    We'll begin with a simple example pipeline to explain the ideas and techniques.
+
+
+    Later, we'll present a more realistic example.
+  </p>
+  
+
+
+    
+      
+  <h4 id="TOC_3.">Squaring numbers</h4>
+  
+  
+  <p>
+    Consider a pipeline with three stages.
+  </p>
+  
+
+  
+  <p>
+    The first stage, <code>gen</code>, is a function that converts a list of integers to a
+
+
+    channel that emits the integers in the list.  The <code>gen</code> function starts a
+
+
+    goroutine that sends the integers on the channel and closes the channel when all
+
+
+    the values have been sent:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="8">func gen(nums ...int) &lt;-chan int {</span>
+<span num="9">    out := make(chan int)</span>
+<span num="10">    go func() {</span>
+<span num="11">        for _, n := range nums {</span>
+<span num="12">            out &lt;- n</span>
+<span num="13">        }</span>
+<span num="14">        close(out)</span>
+<span num="15">    }()</span>
+<span num="16">    return out</span>
+<span num="17">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    The second stage, <code>sq</code>, receives integers from a channel and returns a
+
+
+    channel that emits the square of each received integer.  After the
+
+
+    inbound channel is closed and this stage has sent all the values
+
+
+    downstream, it closes the outbound channel:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="21">func sq(in &lt;-chan int) &lt;-chan int {</span>
+<span num="22">    out := make(chan int)</span>
+<span num="23">    go func() {</span>
+<span num="24">        for n := range in {</span>
+<span num="25">            out &lt;- n * n</span>
+<span num="26">        }</span>
+<span num="27">        close(out)</span>
+<span num="28">    }()</span>
+<span num="29">    return out</span>
+<span num="30">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    The <code>main</code> function sets up the pipeline and runs the final stage: it receives
+
+
+    values from the second stage and prints each one, until the channel is closed:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="32">func main() {</span>
+<span num="33">    // Set up the pipeline.</span>
+<span num="34">    c := gen(2, 3)</span>
+<span num="35">    out := sq(c)</span>
+<span num="36"></span>
+<span num="37">    // Consume the output.</span>
+<span num="38">    fmt.Println(&lt;-out) // 4</span>
+<span num="39">    fmt.Println(&lt;-out) // 9</span>
+<span num="40">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    Since <code>sq</code> has the same type for its inbound and outbound channels, we
+
+
+    can compose it any number of times.  We can also rewrite <code>main</code> as a
+
+
+    range loop, like the other stages:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="32">func main() {</span>
+<span num="33">    // Set up the pipeline and consume the output.</span>
+<span num="34">    for n := range sq(sq(gen(2, 3))) {</span>
+<span num="35">        fmt.Println(n) // 16 then 81</span>
+<span num="36">    }</span>
+<span num="37">}</span>
+</pre>
+
+
+</div>
+  
+
+
+    
+      
+  <h4 id="TOC_4.">Fan-out, fan-in</h4>
+  
+  
+  <p>
+    Multiple functions can read from the same channel until that channel is closed;
+
+
+    this is called <i>fan-out</i>. This provides a way to distribute work amongst a group
+
+
+    of workers to parallelize CPU use and I/O.
+  </p>
+  
+
+  
+  <p>
+    A function can read from multiple inputs and proceed until all are closed by
+
+
+    multiplexing the input channels onto a single channel that's closed when all the
+
+
+    inputs are closed.  This is called <i>fan-in</i>.
+  </p>
+  
+
+  
+  <p>
+    We can change our pipeline to run two instances of <code>sq</code>, each reading from the
+
+
+    same input channel.  We introduce a new function, <i>merge</i>, to fan in the
+
+
+    results:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="64">func main() {</span>
+<span num="65">    in := gen(2, 3)</span>
+<span num="66"></span>
+<span num="67">    // Distribute the sq work across two goroutines that both read from in.</span>
+<span num="68">    c1 := sq(in)</span>
+<span num="69">    c2 := sq(in)</span>
+<span num="70"></span>
+<span num="71">    // Consume the merged output from c1 and c2.</span>
+<span num="72">    for n := range merge(c1, c2) {</span>
+<span num="73">        fmt.Println(n) // 4 then 9, or 9 then 4</span>
+<span num="74">    }</span>
+<span num="75">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    The <code>merge</code> function converts a list of channels to a single channel by starting
+
+
+    a goroutine for each inbound channel that copies the values to the sole outbound
+
+
+    channel.  Once all the <code>output</code> goroutines have been started, <code>merge</code> starts one
+
+
+    more goroutine to close the outbound channel after all sends on that channel are
+
+
+    done.
+  </p>
+  
+
+  
+  <p>
+    Sends on a closed channel panic, so it's important to ensure all sends
+
+
+    are done before calling close.  The
+
+
+    <a href="http://golang.org/pkg/sync/#WaitGroup" target="_blank"><code>sync.WaitGroup</code></a> type
+
+
+    provides a simple way to arrange this synchronization:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="38">func merge(cs ...&lt;-chan int) &lt;-chan int {</span>
+<span num="39">    <b>var wg sync.WaitGroup</b></span>
+<span num="40">    out := make(chan int)</span>
+<span num="41"></span>
+<span num="42">    // Start an output goroutine for each input channel in cs.  output</span>
+<span num="43">    // copies values from c to out until c is closed, then calls wg.Done.</span>
+<span num="44">    output := func(c &lt;-chan int) {</span>
+<span num="45">        for n := range c {</span>
+<span num="46">            out &lt;- n</span>
+<span num="47">        }</span>
+<span num="48">        <b>wg.Done()</b></span>
+<span num="49">    }</span>
+<span num="50">    <b>wg.Add(len(cs))</b></span>
+<span num="51">    for _, c := range cs {</span>
+<span num="52">        go output(c)</span>
+<span num="53">    }</span>
+<span num="54"></span>
+<span num="55">    // Start a goroutine to close out once all the output goroutines are</span>
+<span num="56">    // done.  This must start after the wg.Add call.</span>
+<span num="57">    go func() {</span>
+<span num="58">        <b>wg.Wait()</b></span>
+<span num="59">        close(out)</span>
+<span num="60">    }()</span>
+<span num="61">    return out</span>
+<span num="62">}</span>
+</pre>
+
+
+</div>
+  
+
+
+    
+      
+  <h4 id="TOC_5.">Stopping short</h4>
+  
+  
+  <p>
+    There is a pattern to our pipeline functions:
+  </p>
+  
+
+  <ul>
+  
+    <li>stages close their outbound channels when all the send operations are done.</li>
+  
+    <li>stages keep receiving values from inbound channels until those channels are closed.</li>
+  
+  </ul>
+
+  
+  <p>
+    This pattern allows each receiving stage to be written as a <code>range</code> loop and
+
+
+    ensures that all goroutines exit once all values have been successfully sent
+
+
+    downstream.
+  </p>
+  
+
+  
+  <p>
+    But in real pipelines, stages don't always receive all the inbound
+
+
+    values.  Sometimes this is by design: the receiver may only need a
+
+
+    subset of values to make progress.  More often, a stage exits early
+
+
+    because an inbound value represents an error in an earlier stage. In
+
+
+    either case the receiver should not have to wait for the remaining
+
+
+    values to arrive, and we want earlier stages to stop producing values
+
+
+    that later stages don't need.
+  </p>
+  
+
+  
+  <p>
+    In our example pipeline, if a stage fails to consume all the inbound values, the
+
+
+    goroutines attempting to send those values will block indefinitely:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="71">    // Consume the first value from output.</span>
+<span num="72">    out := merge(c1, c2)</span>
+<span num="73">    fmt.Println(&lt;-out) // 4 or 9</span>
+<span num="74">    return</span>
+<span num="75">    // Since we didn't receive the second value from out,</span>
+<span num="76">    // one of the output goroutines is hung attempting to send it.</span>
+<span num="77">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    This is a resource leak: goroutines consume memory and runtime resources, and
+
+
+    heap references in goroutine stacks keep data from being garbage collected.
+
+
+    Goroutines are not garbage collected; they must exit on their own.
+  </p>
+  
+
+  
+  <p>
+    We need to arrange for the upstream stages of our pipeline to exit even when the
+
+
+    downstream stages fail to receive all the inbound values.  One way to do this is
+
+
+    to change the outbound channels to have a buffer.  A buffer can hold a fixed
+
+
+    number of values; send operations complete immediately if there's room in the
+
+
+    buffer:
+  </p>
+  
+
+  
+  <div class="code"><pre>c := make(chan int, 2) // buffer size 2
+c &lt;- 1  // succeeds immediately
+c &lt;- 2  // succeeds immediately
+c &lt;- 3  // blocks until another goroutine does &lt;-c and receives 1</pre></div>
+  
+
+  
+  <p>
+    When the number of values to be sent is known at channel creation time, a buffer
+
+
+    can simplify the code.  For example, we can rewrite <code>gen</code> to copy the list of
+
+
+    integers into a buffered channel and avoid creating a new goroutine:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="11">func gen(nums ...int) &lt;-chan int {</span>
+<span num="12">    out := make(chan int, len(nums))</span>
+<span num="13">    for _, n := range nums {</span>
+<span num="14">        out &lt;- n</span>
+<span num="15">    }</span>
+<span num="16">    close(out)</span>
+<span num="17">    return out</span>
+<span num="18">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    Returning to the blocked goroutines in our pipeline, we might consider adding a
+
+
+    buffer to the outbound channel returned by <code>merge</code>:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="36">func merge(cs ...&lt;-chan int) &lt;-chan int {</span>
+<span num="37">    var wg sync.WaitGroup</span>
+<span num="38">    out := make(chan int, 1) // enough space for the unread inputs</span>
+<span num="39">    // ... the rest is unchanged ...</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    While this fixes the blocked goroutine in this program, this is bad code.  The
+
+
+    choice of buffer size of 1 here depends on knowing the number of values <code>merge</code>
+
+
+    will receive and the number of values downstream stages will consume.  This is
+
+
+    fragile: if we pass an additional value to <code>gen</code>, or if the downstream stage
+
+
+    reads any fewer values, we will again have blocked goroutines.
+  </p>
+  
+
+  
+  <p>
+    Instead, we need to provide a way for downstream stages to indicate to the
+
+
+    senders that they will stop accepting input.
+  </p>
+  
+
+
+    
+      
+  <h4 id="TOC_6.">Explicit cancellation</h4>
+  
+  
+  <p>
+    When <code>main</code> decides to exit without receiving all the values from
+
+
+    <code>out</code>, it must tell the goroutines in the upstream stages to abandon
+
+
+    the values they're trying it send.  It does so by sending values on a
+
+
+    channel called <code>done</code>.  It sends two values since there are
+
+
+    potentially two blocked senders:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="68">func main() {</span>
+<span num="69">    in := gen(2, 3)</span>
+<span num="70"></span>
+<span num="71">    // Distribute the sq work across two goroutines that both read from in.</span>
+<span num="72">    c1 := sq(in)</span>
+<span num="73">    c2 := sq(in)</span>
+<span num="74"></span>
+<span num="75">    // Consume the first value from output.</span>
+<span num="76">    <b>done := make(chan struct{}, 2)</b></span>
+<span num="77">    out := merge(done, c1, c2)</span>
+<span num="78">    fmt.Println(&lt;-out) // 4 or 9</span>
+<span num="79"></span>
+<span num="80">    // Tell the remaining senders we're leaving.</span>
+<span num="81">    <b>done &lt;- struct{}{}</b></span>
+<span num="82">    <b>done &lt;- struct{}{}</b></span>
+<span num="83">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    The sending goroutines replace their send operation with a <code>select</code> statement
+
+
+    that proceeds either when the send on <code>out</code> happens or when they receive a value
+
+
+    from <code>done</code>.  The value type of <code>done</code> is the empty struct because the value
+
+
+    doesn't matter: it is the receive event that indicates the send on <code>out</code> should
+
+
+    be abandoned.  The <code>output</code> goroutines continue looping on their inbound
+
+
+    channel, <code>c</code>, so the upstream stages are not blocked. (We'll discuss in a moment
+
+
+    how to allow this loop to return early.)
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="36">func merge(done &lt;-chan struct{}, cs ...&lt;-chan int) &lt;-chan int {</span>
+<span num="37">    var wg sync.WaitGroup</span>
+<span num="38">    out := make(chan int)</span>
+<span num="39"></span>
+<span num="40">    // Start an output goroutine for each input channel in cs.  output</span>
+<span num="41">    // copies values from c to out until c is closed or it receives a value</span>
+<span num="42">    // from done, then output calls wg.Done.</span>
+<span num="43">    output := func(c &lt;-chan int) {</span>
+<span num="44">        for n := range c {</span>
+<span num="45">            select {</span>
+<span num="46">            case out &lt;- n:</span>
+<span num="47">            <b>case &lt;-done:</b></span>
+<span num="48">            }</span>
+<span num="49">        }</span>
+<span num="50">        wg.Done()</span>
+<span num="51">    }</span>
+<span num="52">    // ... the rest is unchanged ...</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    This approach has a problem: <i>each</i> downstream receiver needs to know the number
+
+
+    of potentially blocked upstream senders and arrange to signal those senders on
+
+
+    early return.  Keeping track of these counts is tedious and error-prone.
+  </p>
+  
+
+  
+  <p>
+    We need a way to tell an unknown and unbounded number of goroutines to
+
+
+    stop sending their values downstream.  In Go, we can do this by
+
+
+    closing a channel, because
+
+
+    <a href="http://golang.org/ref/spec#Receive_operator" target="_blank">a receive operation on a closed channel can always proceed immediately, yielding the element type's zero value.</a>
+  </p>
+  
+
+  
+  <p>
+    This means that <code>main</code> can unblock all the senders simply by closing
+
+
+    the <code>done</code> channel.  This close is effectively a broadcast signal to
+
+
+    the senders.  We extend <i>each</i> of our pipeline functions to accept
+
+
+    <code>done</code> as a parameter and arrange for the close to happen via a
+
+
+    <code>defer</code> statement, so that all return paths from <code>main</code> will signal
+
+
+    the pipeline stages to exit.
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="74">func main() {</span>
+<span num="75">    // Set up a done channel that's shared by the whole pipeline,</span>
+<span num="76">    // and close that channel when this pipeline exits, as a signal</span>
+<span num="77">    // for all the goroutines we started to exit.</span>
+<span num="78">    <b>done := make(chan struct{})</b></span>
+<span num="79">    <b>defer close(done)</b></span>
+<span num="80"></span>
+<span num="81">    in := gen(done, 2, 3)</span>
+<span num="82"></span>
+<span num="83">    // Distribute the sq work across two goroutines that both read from in.</span>
+<span num="84">    c1 := sq(done, in)</span>
+<span num="85">    c2 := sq(done, in)</span>
+<span num="86"></span>
+<span num="87">    // Consume the first value from output.</span>
+<span num="88">    out := merge(done, c1, c2)</span>
+<span num="89">    fmt.Println(&lt;-out) // 4 or 9</span>
+<span num="90"></span>
+<span num="91">    <b>// done will be closed by the deferred call.</b></span>
+<span num="92">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    Each of our pipeline stages is now free to return as soon as <code>done</code> is closed.
+
+
+    The <code>output</code> routine in <code>merge</code> can return without draining its inbound channel,
+
+
+    since it knows the upstream sender, <code>sq</code>, will stop attempting to send when
+
+
+    <code>done</code> is closed.  <code>output</code> ensures <code>wg.Done</code> is called on all return paths via
+
+
+    a <code>defer</code> statement:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="41">func merge(done &lt;-chan struct{}, cs ...&lt;-chan int) &lt;-chan int {</span>
+<span num="42">    var wg sync.WaitGroup</span>
+<span num="43">    out := make(chan int)</span>
+<span num="44"></span>
+<span num="45">    // Start an output goroutine for each input channel in cs.  output</span>
+<span num="46">    // copies values from c to out until c or done is closed, then calls</span>
+<span num="47">    // wg.Done.</span>
+<span num="48">    output := func(c &lt;-chan int) {</span>
+<span num="49">        <b>defer wg.Done()</b></span>
+<span num="50">        for n := range c {</span>
+<span num="51">            select {</span>
+<span num="52">            case out &lt;- n:</span>
+<span num="53">            case &lt;-done:</span>
+<span num="54">                <b>return</b></span>
+<span num="55">            }</span>
+<span num="56">        }</span>
+<span num="57">    }</span>
+<span num="58">    // ... the rest is unchanged ...</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    Similarly, <code>sq</code> can return as soon as <code>done</code> is closed.  <code>sq</code> ensures its <code>out</code>
+
+
+    channel is closed on all return paths via a <code>defer</code> statement:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="23">func sq(done &lt;-chan struct{}, in &lt;-chan int) &lt;-chan int {</span>
+<span num="24">    out := make(chan int)</span>
+<span num="25">    go func() {</span>
+<span num="26">        <b>defer close(out)</b></span>
+<span num="27">        for n := range in {</span>
+<span num="28">            select {</span>
+<span num="29">            case out &lt;- n * n:</span>
+<span num="30">            case &lt;-done:</span>
+<span num="31">                <b>return</b></span>
+<span num="32">            }</span>
+<span num="33">        }</span>
+<span num="34">    }()</span>
+<span num="35">    return out</span>
+<span num="36">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    Here are the guidelines for pipeline construction:
+  </p>
+  
+
+  <ul>
+  
+    <li>stages close their outbound channels when all the send operations are done.</li>
+  
+    <li>stages keep receiving values from inbound channels until those channels are closed or the senders are unblocked.</li>
+  
+  </ul>
+
+  
+  <p>
+    Pipelines unblock senders either by ensuring there's enough buffer for all the
+
+
+    values that are sent or by explicitly signalling senders when the receiver may
+
+
+    abandon the channel.
+  </p>
+  
+
+
+    
+      
+  <h4 id="TOC_7.">Digesting a tree</h4>
+  
+  
+  <p>
+    Let's consider a more realistic pipeline.
+  </p>
+  
+
+  
+  <p>
+    MD5 is a message-digest algorithm that's useful as a file checksum.  The command
+
+
+    line utility <code>md5sum</code> prints digest values for a list of files.
+  </p>
+  
+
+  
+  <div class="code"><pre>% md5sum *.go
+d47c2bbc28298ca9befdfbc5d3aa4e65  bounded.go
+ee869afd31f83cbb2d10ee81b2b831dc  parallel.go
+b88175e65fdcbc01ac08aaf1fd9b5e96  serial.go</pre></div>
+  
+
+  
+  <p>
+    Our example program is like <code>md5sum</code> but instead takes a single directory as an
+
+
+    argument and prints the digest values for each regular file under that
+
+
+    directory, sorted by path name.
+  </p>
+  
+
+  
+  <div class="code"><pre>% go run serial.go .
+d47c2bbc28298ca9befdfbc5d3aa4e65  bounded.go
+ee869afd31f83cbb2d10ee81b2b831dc  parallel.go
+b88175e65fdcbc01ac08aaf1fd9b5e96  serial.go</pre></div>
+  
+
+  
+  <p>
+    The main function of our program invokes a helper function <code>MD5All</code>, which
+
+
+    returns a map from path name to digest value, then sorts and prints the results:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="39">func main() {</span>
+<span num="40">    // Calculate the MD5 sum of all files under the specified directory,</span>
+<span num="41">    // then print the results sorted by path name.</span>
+<span num="42">    <b>m, err := MD5All(os.Args[1])</b></span>
+<span num="43">    if err != nil {</span>
+<span num="44">        fmt.Println(err)</span>
+<span num="45">        return</span>
+<span num="46">    }</span>
+<span num="47">    var paths []string</span>
+<span num="48">    for path := range m {</span>
+<span num="49">        paths = append(paths, path)</span>
+<span num="50">    }</span>
+<span num="51">    <b>sort.Strings(paths)</b></span>
+<span num="52">    for _, path := range paths {</span>
+<span num="53">        fmt.Printf("%x  %s\n", m[path], path)</span>
+<span num="54">    }</span>
+<span num="55">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    The <code>MD5All</code> function is the focus of our discussion.  In
+
+
+    <a href="https://blog.golang.org/pipelines/serial.go" target="_self">serial.go</a>, the implementation uses no concurrency and
+
+
+    simply reads and sums each file as it walks the tree.
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="14">// MD5All reads all the files in the file tree rooted at root and returns a map</span>
+<span num="15">// from file path to the MD5 sum of the file's contents.  If the directory walk</span>
+<span num="16">// fails or any read operation fails, MD5All returns an error.</span>
+<span num="17">func MD5All(root string) (map[string][md5.Size]byte, error) {</span>
+<span num="18">    m := make(map[string][md5.Size]byte)</span>
+<span num="19">    <b>err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {</b></span>
+<span num="20">        if err != nil {</span>
+<span num="21">            return err</span>
+<span num="22">        }</span>
+<span num="23">        if !info.Mode().IsRegular() {</span>
+<span num="24">            return nil</span>
+<span num="25">        }</span>
+<span num="26">        <b>data, err := ioutil.ReadFile(path)</b></span>
+<span num="27">        if err != nil {</span>
+<span num="28">            return err</span>
+<span num="29">        }</span>
+<span num="30">        <b>m[path] = md5.Sum(data)</b></span>
+<span num="31">        return nil</span>
+<span num="32">    })</span>
+<span num="33">    if err != nil {</span>
+<span num="34">        return nil, err</span>
+<span num="35">    }</span>
+<span num="36">    return m, nil</span>
+<span num="37">}</span>
+</pre>
+
+
+</div>
+  
+
+
+    
+      
+  <h4 id="TOC_8.">Parallel digestion</h4>
+  
+  
+  <p>
+    In <a href="https://blog.golang.org/pipelines/parallel.go" target="_self">parallel.go</a>, we split <code>MD5All</code> into a two-stage
+
+
+    pipeline.  The first stage, <code>sumFiles</code>, walks the tree, digests each file in
+
+
+    a new goroutine, and sends the results on a channel with value type <code>result</code>:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="17">type result struct {</span>
+<span num="18">    path string</span>
+<span num="19">    sum  [md5.Size]byte</span>
+<span num="20">    err  error</span>
+<span num="21">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    <code>sumFiles</code> returns two channels: one for the <code>results</code> and another for the error
+
+
+    returned by <code>filepath.Walk</code>.  The walk function starts a new goroutine to
+
+
+    process each regular file, then checks <code>done</code>.  If <code>done</code> is closed, the walk
+
+
+    stops immediately:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="27">func sumFiles(done &lt;-chan struct{}, root string) (&lt;-chan result, &lt;-chan error) {</span>
+<span num="28">    // For each regular file, start a goroutine that sums the file and sends</span>
+<span num="29">    // the result on c.  Send the result of the walk on errc.</span>
+<span num="30">    c := make(chan result)</span>
+<span num="31">    errc := make(chan error, 1)</span>
+<span num="32">    <b>go func() {</b></span>
+<span num="33">        var wg sync.WaitGroup</span>
+<span num="34">        err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {</span>
+<span num="35">            if err != nil {</span>
+<span num="36">                return err</span>
+<span num="37">            }</span>
+<span num="38">            if !info.Mode().IsRegular() {</span>
+<span num="39">                return nil</span>
+<span num="40">            }</span>
+<span num="41">            wg.Add(1)</span>
+<span num="42">            <b>go func() {</b></span>
+<span num="43">                data, err := ioutil.ReadFile(path)</span>
+<span num="44">                select {</span>
+<span num="45">                <b>case c &lt;- result{path, md5.Sum(data), err}:</b></span>
+<span num="46">                <b>case &lt;-done:</b></span>
+<span num="47">                }</span>
+<span num="48">                wg.Done()</span>
+<span num="49">            }()</span>
+<span num="50">            // Abort the walk if done is closed.</span>
+<span num="51">            select {</span>
+<span num="52">            <b>case &lt;-done:</b></span>
+<span num="53">                return errors.New("walk canceled")</span>
+<span num="54">            default:</span>
+<span num="55">                return nil</span>
+<span num="56">            }</span>
+<span num="57">        })</span>
+<span num="58">        // Walk has returned, so all calls to wg.Add are done.  Start a</span>
+<span num="59">        // goroutine to close c once all the sends are done.</span>
+<span num="60">        <b>go func() {</b></span>
+<span num="61">            wg.Wait()</span>
+<span num="62">            <b>close(c)</b></span>
+<span num="63">        }()</span>
+<span num="64">        // No select needed here, since errc is buffered.</span>
+<span num="65">        <b>errc &lt;- err</b></span>
+<span num="66">    }()</span>
+<span num="67">    return c, errc</span>
+<span num="68">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    <code>MD5All</code> receives the digest values from <code>c</code>.  <code>MD5All</code> returns early on error,
+
+
+    closing <code>done</code> via a <code>defer</code>:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="74">func MD5All(root string) (map[string][md5.Size]byte, error) {</span>
+<span num="75">    // MD5All closes the done channel when it returns; it may do so before</span>
+<span num="76">    // receiving all the values from c and errc.</span>
+<span num="77">    <b>done := make(chan struct{})</b></span>
+<span num="78">    <b>defer close(done)</b></span>
+<span num="79"></span>
+<span num="80">    <b>c, errc := sumFiles(done, root)</b></span>
+<span num="81"></span>
+<span num="82">    m := make(map[string][md5.Size]byte)</span>
+<span num="83">    for r := range c {</span>
+<span num="84">        if r.err != nil {</span>
+<span num="85">            return nil, r.err</span>
+<span num="86">        }</span>
+<span num="87">        m[r.path] = r.sum</span>
+<span num="88">    }</span>
+<span num="89">    if err := &lt;-errc; err != nil {</span>
+<span num="90">        return nil, err</span>
+<span num="91">    }</span>
+<span num="92">    return m, nil</span>
+<span num="93">}</span>
+</pre>
+
+
+</div>
+  
+
+
+    
+      
+  <h4 id="TOC_9.">Bounded parallelism</h4>
+  
+  
+  <p>
+    The <code>MD5All</code> implementation in <a href="https://blog.golang.org/pipelines/parallel.go" target="_self">parallel.go</a>
+
+
+    starts a new goroutine for each file. In a directory with many large
+
+
+    files, this may allocate more memory than is available on the machine.
+  </p>
+  
+
+  
+  <p>
+    We can limit these allocations by bounding the number of files read in
+
+
+    parallel.  In <a href="https://blog.golang.org/pipelines/bounded.go" target="_self">bounded.go</a>, we do this by
+
+
+    creating a fixed number of goroutines for reading files.  Our pipeline
+
+
+    now has three stages: walk the tree, read and digest the files, and
+
+
+    collect the digests.
+  </p>
+  
+
+  
+  <p>
+    The first stage, <code>walkFiles</code>, emits the paths of regular files in the tree:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="19">func walkFiles(done &lt;-chan struct{}, root string) (&lt;-chan string, &lt;-chan error) {</span>
+<span num="20">    paths := make(chan string)</span>
+<span num="21">    errc := make(chan error, 1)</span>
+<span num="22">    <b>go func() {</b></span>
+<span num="23">        // Close the paths channel after Walk returns.</span>
+<span num="24">        <b>defer close(paths)</b></span>
+<span num="25">        // No select needed for this send, since errc is buffered.</span>
+<span num="26">        <b>errc &lt;- filepath.Walk(root, func(path string, info os.FileInfo, err error) error {</b></span>
+<span num="27">            if err != nil {</span>
+<span num="28">                return err</span>
+<span num="29">            }</span>
+<span num="30">            if !info.Mode().IsRegular() {</span>
+<span num="31">                return nil</span>
+<span num="32">            }</span>
+<span num="33">            select {</span>
+<span num="34">            <b>case paths &lt;- path:</b></span>
+<span num="35">            <b>case &lt;-done:</b></span>
+<span num="36">                return errors.New("walk canceled")</span>
+<span num="37">            }</span>
+<span num="38">            return nil</span>
+<span num="39">        })</span>
+<span num="40">    }()</span>
+<span num="41">    return paths, errc</span>
+<span num="42">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    The middle stage starts a fixed number of <code>digester</code> goroutines that receive
+
+
+    file names from <code>paths</code> and send <code>results</code> on channel <code>c</code>:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="53">func digester(done &lt;-chan struct{}, paths &lt;-chan string, c chan&lt;- result) {</span>
+<span num="54">    <b>for path := range paths {</b></span>
+<span num="55">        data, err := ioutil.ReadFile(path)</span>
+<span num="56">        select {</span>
+<span num="57">        case c &lt;- result{path, md5.Sum(data), err}:</span>
+<span num="58">        case &lt;-done:</span>
+<span num="59">            return</span>
+<span num="60">        }</span>
+<span num="61">    }</span>
+<span num="62">}</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    Unlike our previous examples, <code>digester</code> does not close its output channel, as
+
+
+    multiple goroutines are sending on a shared channel.  Instead, code in <code>MD5All</code>
+
+
+    arranges for the channel to be closed when all the <code>digesters</code> are done:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="76">    // Start a fixed number of goroutines to read and digest files.</span>
+<span num="77">    <b>c := make(chan result)</b></span>
+<span num="78">    var wg sync.WaitGroup</span>
+<span num="79">    const numDigesters = 20</span>
+<span num="80">    wg.Add(numDigesters)</span>
+<span num="81">    for i := 0; i &lt; numDigesters; i++ {</span>
+<span num="82">        go func() {</span>
+<span num="83">            <b>digester(done, paths, c)</b></span>
+<span num="84">            wg.Done()</span>
+<span num="85">        }()</span>
+<span num="86">    }</span>
+<span num="87">    go func() {</span>
+<span num="88">        wg.Wait()</span>
+<span num="89">        <b>close(c)</b></span>
+<span num="90">    }()</span>
+</pre>
+
+
+</div>
+  
+
+  
+  <p>
+    We could instead have each digester create and return its own output
+
+
+    channel, but then we would need additional goroutines to fan-in the
+
+
+    results.
+  </p>
+  
+
+  
+  <p>
+    The final stage receives all the <code>results</code> from <code>c</code> then checks the
+
+
+    error from <code>errc</code>.  This check cannot happen any earlier, since before
+
+
+    this point, <code>walkFiles</code> may block sending values downstream:
+  </p>
+  
+
+  
+	<div class="code">
+
+
+<pre><span num="93">    m := make(map[string][md5.Size]byte)</span>
+<span num="94">    for r := range c {</span>
+<span num="95">        if r.err != nil {</span>
+<span num="96">            return nil, r.err</span>
+<span num="97">        }</span>
+<span num="98">        m[r.path] = r.sum</span>
+<span num="99">    }</span>
+<span num="100">    // Check whether the Walk failed.</span>
+<span num="101">    <b>if err := &lt;-errc; err != nil {</b></span>
+<span num="102">        return nil, err</span>
+<span num="103">    }</span>
+<span num="104">    return m, nil</span>
+<span num="105">}</span>
+</pre>
+
+
+</div>
+  
+
+
+    
+      
+  <h4 id="TOC_10.">Conclusion</h4>
+  
+  
+  <p>
+    This article has presented techniques for constructing streaming data pipelines
+
+
+    in Go.  Dealing with failures in such pipelines is tricky, since each stage in
+
+
+    the pipeline may block attempting to send values downstream, and the downstream
+
+
+    stages may no longer care about the incoming data.  We showed how closing a
+
+
+    channel can broadcast a "done" signal to all the goroutines started by a
+
+
+    pipeline and defined guidelines for constructing pipelines correctly.
+  </p>
+  
+
+  
+  <p>
+    Further reading:
+  </p>
+  
+
+  <ul>
+  
+    <li><a href="http://talks.golang.org/2012/concurrency.slide#1" target="_blank">Go Concurrency Patterns</a> (<a href="https://www.youtube.com/watch?v=f6kdp27TYZs" target="_blank">video</a>) presents the basics of Go's concurrency primitives and several ways to apply them.</li>
+  
+    <li><a href="http://blog.golang.org/advanced-go-concurrency-patterns" target="_blank">Advanced Go Concurrency Patterns</a> (<a href="http://www.youtube.com/watch?v=QDDwwePbDtw" target="_blank">video</a>) covers more complex uses of Go's primitives, especially <code>select</code>.</li>
+  
+    <li>Douglas McIlroy's paper <a href="http://swtch.com/~rsc/thread/squint.pdf" target="_blank">Squinting at Power Series</a> shows how Go-like concurrency provides elegant support for complex calculations.</li>
+  
+  </ul>
+
+
+    
+  
+
+
+		
+			<p class="author">By Sameer Ajmani</p>
+		
+	</div>
+
+	
+		<h2>Related articles</h2>
+		<ul>
+		
+			<li><a href="https://blog.golang.org/context">Go Concurrency Patterns: Context</a></li>
+		
+			<li><a href="https://blog.golang.org/race-detector">Introducing the Go Race Detector</a></li>
+		
+			<li><a href="https://blog.golang.org/advanced-go-concurrency-patterns">Advanced Go Concurrency Patterns</a></li>
+		
+			<li><a href="https://blog.golang.org/concurrency-is-not-parallelism">Concurrency is not parallelism</a></li>
+		
+			<li><a href="https://blog.golang.org/go-videos-from-google-io-2012">Go videos from Google I/O 2012</a></li>
+		
+			<li><a href="https://blog.golang.org/go-concurrency-patterns-timing-out-and">Go Concurrency Patterns: Timing out, moving on</a></li>
+		
+			<li><a href="https://blog.golang.org/share-memory-by-communicating">Share Memory By Communicating</a></li>
+		
+		</ul>
+	
+
+</div>
+
+<div id="footer">
+	<p>
+	Except as
+	<a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+	the content of this page is licensed under the Creative Commons
+	Attribution 3.0 License,<br>
+	and code is licensed under a <a href="https://golang.org/LICENSE">BSD license</a>.<br>
+	<a href="https://golang.org/doc/tos.html">Terms of Service</a> | 
+	<a href="https://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+	</p>
+</div>
+
+</div>
+</div>
+
+<script type="text/javascript">
+(function() {
+  var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+  ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+  var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<script src="./ajmani2014_files/jquery.js"></script>
+<script src="./ajmani2014_files/playground.js"></script>
+<script src="./ajmani2014_files/play.js"></script>
+<script src="./ajmani2014_files/godocs.js"></script>
+<script>
+$(function() {
+	
+	$('.playground > pre.numbers, .code > pre.numbers').each(function() {
+		var $spans = $(this).find('> span');
+
+		
+		var max = 0;
+		$spans.each(function() {
+			var n = $(this).attr('num')*1;
+			if (n > max) max = n;
+		});
+		var width = 2;
+		while (max > 10) {
+			max = max / 10;
+			width++;
+		}
+
+		
+		$spans.each(function() {
+			var n = $(this).attr('num')+' ';
+			while (n.length < width) n = ' '+n;
+			$('<span class="number">').text(n).insertBefore(this);
+		});
+	});
+
+	initPlayground(new HTTPTransport());
+});
+</script>
+
+</body></html>

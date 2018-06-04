@@ -1,5 +1,29 @@
 % ORIENTAÇÕES GERAIS------------------------------------------------------------
 
+% QUADROS E TABELAS---------------------------------------------------------------
+\chapter{QUADROS E TABELAS}
+\label{chap:tabelas}
+
+Formatar colunas no \LaTeX{} é um pouco mais trabalhoso. Porém, ambos aparecem automaticamente nas suas respectivas listas (indexações).
+No caso deste template, ambos os elementos (Quadros e Tabelas) devem ser criados em arquivos separados para facilitar manutenção e armazenados no diretório de "/dados".
+
+\input{./dados/quadros/quadro1}
+
+\input{./dados/tabelas/tabela1}
+
+No caso deste template, ambos os elementos (Quadros e Tabelas) devem ser criados em arquivos separados para facilitar manutenção e armazenados no diretório de "/dados".
+
+Para posicionar as tabelas no documento, existem alguns simbolos a serem utilizados. O \autoref{qua:quadro-floats} demonstra os símbolos denominados \textit{floats}. Eles tem como objetivo definir o posicionamento do elemento dentro do documento.
+
+\input{./dados/quadros/floats}
+
+Para delimitar os espaços das colunas e suas respectivas divisões, os símbolos mais utilizados são demonstrados pelo \autoref{qua:quadro-colunas}.
+
+\input{./dados/quadros/colunas}
+
+Por fim, existem alguns símbolos que precisamos utilizar para delimitar e formatar as informações contidas dentro das tabelas, conforme o Quadro mostra.
+
+A diferença entre quadro e tabela está no fato que um quadro é formado por linhas horizontais e verticais. Deve ser utilizado quando o conteúdo é majoritariamente não-numérico. O número do quadro e o título vem acima do quadro, e a fonte, deve vir abaixo. E Uma tabela é formada apenas por linhas verticais. Deve ser utilizada quando o conteúdo é majoritariamente numérico. O número da tabela e o título vem acima da tabela, e a fonte, deve vir abaixo, tal como no quadro.
 
 % SOBRE AS ILUSTRAÇÕES----------------------------------------------------------
 \chapter{SOBRE AS ILUSTRAÇÕES}
@@ -24,20 +48,6 @@ Os arquivos das figuras devem ser armazenados no diretório de "/dados".
     \fonte{\citeonline{IRL2014}}
     \label{fig:figura-exemplo1}
 \end{figure}
-
-% QUADROS E TABELAS---------------------------------------------------------------
-\chapter{QUADROS E TABELAS}
-\label{chap:tabelas}
-
-Exemplo de como inserir o \autoref{qua:quadro-exemplo1} e a \autoref{tab:tabela-exemplo1}. Ambos aparecem automaticamente nas suas respectivas listas. Para saber mais informações sobre a construção de tabelas no \LaTeX{} consulte literatura especializada \cite{Mittelbach2004}.
-
-Ambos os elementos (Quadros e Tabelas) devem ser criados em arquivos separados para facilitar manutenção e armazenados no diretório de "/dados".
-
-\input{./dados/quadros/quadro1}
-
-A diferença entre quadro e tabela está no fato que um quadro é formado por linhas horizontais e verticais. Deve ser utilizado quando o conteúdo é majoritariamente não-numérico. O número do quadro e o título vem acima do quadro, e a fonte, deve vir abaixo. E Uma tabela é formada apenas por linhas verticais. Deve ser utilizada quando o conteúdo é majoritariamente numérico. O número da tabela e o título vem acima da tabela, e a fonte, deve vir abaixo, tal como no quadro.
-
-\input{./dados/tabelas/tabela1}
 
 % EQUAÇÕES-----------------------------------------------------------------------
 \chapter{EQUAÇÕES}

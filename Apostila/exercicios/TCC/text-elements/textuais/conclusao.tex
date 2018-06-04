@@ -1,0 +1,28 @@
+% CONCLUSÃO--------------------------------------------------------------------
+
+\chapter{CONCLUSÃO}
+\label{chap:conclusao}
+
+Este trabalho teve como objetivo reunir informações sobre formas de aperfeiçoar mecanismos de processamento de dados, tendo como resultado uma estrutura que modela computações ao invés de informações, que, neste, foi chamada de processo. Este processo possui um conceito simples onde etapas são encadeadas para formarem um processo maior que simplifica a forma como são desenvolvidos sistemas.
+  
+  Para alcançar esta meta, foram pesquisadas práticas consideradas idiomáticas nas mais diversas linguagens, além de construções e sintaxes apontadas pela comunidade como auxílios genuínos, amplamente utilizados para elaborar \textit{softwares} que expressam sua funcionalidade de forma concisa sem perder a segurança e expressividade. As principais influências que contribuiram para a formulação da ideia apresentada neste trabalho podem ser listadas da seguinte forma:
+  
+  \begin{itemize}
+    \item A linguagem \textit{Go} é a mais popular cuja apresenta suporte a CSP. Por causa desta característica, ela possui uma forma muito robusta de modelar processos sequenciais, devido ao fato de que não só o seu modelo de concorrência mas também a técnica usada para aproveitá-lo tem ao seu dispor várias pesquisas em torno de como fazer com que esta seja utilizada da melhor forma possível, algumas cujas foram citadas por este trabalho;
+    \item Uma sintaxe que garante muita expressividade aos \textit{softwares} que fazem o seu uso é o operador \textit{pipe} presente em linguagens como \textit{F\#} e \textit{Elixir}. Este operador é usado para fazer com que o valor ou retorno de função que antecede o operador seja usado como o primeiro argumento da função que o sucede. De forma simples, esta pode ser considerada uma maneira de como seria estruturado um processo composto por etapas;
+    \item Outra contribuição feita por linguagens funcionais, como por exemplo \textit{F\#} e \textit{Haskell}, é o conceito de que existe a separação entre valores e os procedimentos, mas até mesmo procedimentos podem ser modelados como valores. Isto se mostra pela (mas não está restrito a) noção de funções classificadas como \textit{functors}, onde é possível realizar processos sobre conjuntos de informações onde um dos argumentos para este processo é outro processo, cujo retorno determina a transformação a ser realizada.
+  \end{itemize}
+  
+  Na suposição de uma implementação concreta da estrutura apresentada por esse trabalho, a técnica de \textit{worker pool} mostraria resultados mais estáveis, pelo fato de não haver trocas de contexto. No entanto, a técnica de \textit{work stealing} mostraria mais desempenho em situações onde a carga a ser processada é maior, devido à realidade de que a sobrecarga gerada pela troca de contexto dificilmente seria maior ou pelo menos significativa em relação a carga, que é acompanhado pelo fato desta apresentar uma complexidade maior quando o tópico é a sua elaboração.
+  
+  Assim que conceituada a estrutura proposta por este trabalho, foi apresentada uma teoria de como esta poderia ser usada de forma prática para desenvolver um servidor HTTP versão 1.1. Foi observado que um processo modular teria a capacidade de auxiliar nas mais diversas tarefas de processamento de informações pertinentes ao contexo, e os dois exemplos mais prominentes se resumem à análise da requisição e geração de uma estrutura que representa a requisição e o tratamento desta, com o intuito de gerar uma resposta a ser enviada ao cliente.
+  
+  Por mais que este trabalho consiga definir grande parte da estrutura proposta, ainda existem desafios a serem superados, e alguns deles podem ser listados como a seguir:
+  
+  \begin{itemize}
+    \item Ainda não foi encontrada uma forma de lidar com erros durante o processamento de forma eficiente. Certos mecanismos para gerenciamento de erros, como por exemplo, o da linguagem \textit{Java}, tendem a oferecer benefícios apenas para computações síncronas, e apresentam dificuldade em lidar com ambientes paralelos. Uma das alternativas seria tratar erros como se fossem valores como qualquer outro, como é feito, por exemplo, na linguagem \textit{Rust}.
+    \item Existe uma dificuldade em conciliar a necessidade de compartilhar informações entre etapas com o acomplamento fraco que se deseja que exista. A solução deste problema pode influenciar, inclusive, o mecanismo de gerenciamento de erros oferecido pela estrutura.
+  \end{itemize}
+  
+  Um dos principais benefícios que é esperado ser obtido com uma implementação concreta desta estrutura é a descomplexificação de processos através de modularização. Contanto que seja possível extrair tarefas menores de um processo monolítico, é possível criar etapas e encadeá-las para, então, ter como resultado o processo original só que, desta vez, modular. Além disto, uma consequência da modularização de um processo é que se torna muito mais simples a execução de instruções paralelamente, aumentando o desempenho do procedimento. Para finalizar, é esperado, como existiria a composição de tarefas, que estas pudessem ser reutilizadas em outros sistemas, de forma que fizessem parte de diferentes processos.
+  

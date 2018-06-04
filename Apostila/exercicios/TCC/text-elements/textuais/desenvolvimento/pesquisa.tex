@@ -1,0 +1,92 @@
+% METODOLOGIA------------------------------------------------------------------
+
+\chapter{PESQUISA}
+
+  Como requerimento da introdução dos conceitos propostos neste trabalho, é necessário estabelecer uma base cuja será usada para solidificar a progressão da forma como são organizadas as abstrações apresentadas. Com a intenção da elaboração um modelo de estruturação de procedimentos, primeiro é indispensável definir o modelo de como é tradicionalmente estruturado um conjunto de informações para, então, explorar as possíveis formas de aumentar seu desempenho através de paralelização.
+  
+  \section{Estruturas de Dados}
+  
+  Em estruturas de dados convencionais, a tarefa proposta é modelar uma informação de forma que as relações entre os valores sejam claras e que o seu acesso seja eficiente. Cada estrutura de dado tem seus pontos fortes e fracos, e, por causa disso, é importante saber em quais situações cada uma delas será mais apropriada \cite{cormen2009}. Com esta concepção formalizada, apresenta-se a viabilidade do uso do mesmo conceito para modelar procedimentos ao invés de informações, e usar estes como blocos de construção para a criação de um processo maior, completamente personalizado para as necessidades que um desenvolvedor possa estar buscando atender.
+  
+  \section{\textit{Pipelining}}
+  
+  Uma técnica de computação paralela muito utilizada em linguagens com suporte a CSP (\textit{Communicating Sequential Processes}) é a de \textit{pipelining}. Uma \textit{pipeline} é uma série de estágios cuja entrada é a saída do anterior. Em cada um, o valor é recebido, algum tipo de processamento é realizado no mesmo e então ele é repassado para uma saída, onde será capturado pelo próximo ou pelo consumidor \cite{ajmani2014}. Na figura \ref{fig:stage} está sua representação: o losango representa a entrada, a flecha, a saída, e a linha entre os dois, a operação que é feita sobre os dados.
+  
+\begin{figure}[!htb]
+    \centering
+    \caption{Representação de um estágio do conceito de \textit{pipelining}}
+    \includegraphics[width=0.5\textwidth]{./dados/figuras/stage.png}
+    \fonte{\citeonline{ajmani2014}}
+    \label{fig:stage}
+\end{figure}
+  
+A entrada do primeiro estágio é chamada de produtor, enquanto a saída do último é conhecida como consumidor \cite{ajmani2014}. O que garante o aspecto paralelo a esta técnica é que cada estágio pode ser executado em uma \textit{thread} própria, tendo um funcionamento similar à técnica de computação paralela conhecida por \textit{worker pool}, sendo que cada estágio pode ser considerado um \textit{worker}. A representação de uma pipeline é feita na figura \ref{fig:stage}, onde a flecha antecedendo o primeiro estágio simboliza o produtor, e o losango que sucede o último estágio, o consumidor.
+  
+  \section{Cuidados com a GPU}
+
+  As características que mais influenciam a resistência de um processador são as que ressaltam a física dele.
+  Por exemplo: O CPU tem IHS e o GPU não, esse já é um ponto a mais para o CPU na questão de resistência, 
+  pois o GPU não tendo IHS, terá o núcleo exposto e consequentemente será mais sensível.
+  Só que o GPU aguenta mais calor do que o CPU,entretanto ele ainda consome mais \textit{watts}.
+
+  \begin{table}[h!]
+    \centering
+    \caption{Comparativo CPU X GPU}
+    \label{comparativo}
+    \begin{tabular}{|l|l|}
+      \hline
+      \multicolumn{1}{|c|}{\textbf{CPU}}              &   \multicolumn{1}{c|}{\textbf{CPU}}            \\ \hline
+      Tem dissipador de calor e cooler                &   tem dissipador de calor e cooler (a maioria)  \\ \hline
+      possui IHS                                      &   Não possui IHS                                 \\ \hline
+      é móvel                                         &   é fixo                                          \\ \hline
+      pode consumir mais que 100 \textit{watts}       &   geralmente consome mais que 300 \textit{watts}   \\ \hline
+      mede 118 mm\textsuperscript{2} internos ou mais &   mede 114 mm\textsuperscript{2} internos ou mais   \\ \hline
+    \end{tabular}
+  \end{table}
+
+  \section{Equações}
+
+  \begin{equation}
+  y = x
+  \end{equation}
+
+  \begin{equation}
+  y = \frac{1}{x}
+  \end{equation}
+
+  \begin{equation}
+  x_2 = \frac{5 - \sqrt{25 - 4 \times 6}}{2} = 2
+  \end{equation}
+
+  \newpage
+  \section{Código}
+
+  \begin{lstlisting}
+  #include 
+  using namespace std;
+  int main()
+  {
+    /* comentario */
+    int n, i, a = 0, b = 1, F;
+    cout << "Digite o numero de termos da sequencia de Fibonacci: ";
+    cin >> n;
+    cout << a << " " << b << " ";
+    for (i = 0; i < n - 2; i++)   {
+      F = a + b;
+      cout << F << " ";
+      a = b;
+      b = F;
+    } cout << endl; return 0;
+  } \end{lstlisting}
+
+
+  \section{Citação Longa}
+
+Segundo \cite{cormen2009}
+
+\begin{citacao}
+O processamento modular de informações proposto pode ser usado
+para implementar um combinador de analisadores, técnica muito utilizada para criar pro-
+gramas e bibliotecas que fazem a análise de alguma informação e a transformam em uma
+estrutura correspondente.
+\end{citacao}

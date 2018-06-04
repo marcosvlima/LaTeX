@@ -11,18 +11,14 @@
 \include{template-config/pacotes}
 \include{template-config/configuracoes-pdf}
 
-
-% INCLUI ARQUIVOS DO TRABALHO DE CONCLUSÃO DE CURSO (PRÉ-TEXTUAIS, TEXTUAIS, PÓS-TEXTUAIS)-----------------------
-
-% INSERE CAPA E FOLHA DE ROSTO
+% INSERE CAPA
 \include{text-elements/pre-textuais/capa}
 
 \begin{document}
 
 \pretextual
 \imprimircapa                                               	               % Comando para imprimir Capa
-% \imprimirfolhaderosto{}                                     		           % Comando para imprimir Folha de rosto
-% \imprimirfolhadeaprovacao
+
 % INSERE ELEMENTOS PRÉ-TEXTUAIS     			           
 \include{text-elements/pre-textuais/listas/listas-ilustracoes/lista-figuras}   % Lista de Figuras
 \include{text-elements/pre-textuais/listas/listas-ilustracoes/lista-quadros}   % Lista de Quadros
@@ -38,15 +34,13 @@
 \include{text-elements/textuais/desenvolvimento/estrutura-comandos}            % Estrutura e comandos
 \include{text-elements/textuais/desenvolvimento/simbolos-acentuacao}           % Simbolos especiais
 \include{text-elements/textuais/desenvolvimento/divisao-textual}               % Comandos para divisão do texto
-\include{text-elements/textuais/desenvolvimento/estilo-pagina}
-\include{text-elements/textuais/desenvolvimento/formatacao}                % Comandos para formatação do texto
+\include{text-elements/textuais/desenvolvimento/estilo-pagina}                 % Comandos para estilizar a página
+\include{text-elements/textuais/desenvolvimento/formatacao}                    % Comandos para formatação do texto
 \include{text-elements/textuais/desenvolvimento/orientacoes}                   % Capítulo com Orientações de uso do Template
-\include{text-elements/textuais/conclusao}                 			           % Conclusão
 
 \postextual
 % INSERE ELEMENTOS PÓS-TEXTUAIS
 \include{text-elements/pos-textuais/referencias}           			           % Referências
-\include{text-elements/pos-textuais/apendices}             			           % Apêndices
-\include{text-elements/pos-textuais/anexos}               			           % Anexos
 
 \end{document}
+\grid

@@ -41,20 +41,38 @@ Para alinhar o texto à esquerda:
 \end{flushright}
 \end{verbatim}
 
-\section{Espaçamento}
-
-No LaTeX existem alguns tipos de espaçamentos, como: \\
-
- \begin{itemize}
-    \item Espaçamento simples \verb|\space{}|
-    \item Espaçamento Vertical: \verb|\vspace{espaço}|
-    \item Espaçamento Horizontal: \verb|\hspace{espaço}|
-\end{itemize}
-
 \section{Quebra de Linhas e Página}
 
 O comando \verb|\newline| ou \verb|\\| resultam em uma quebra de linha. 
 O comando \verb|newline| resulta em uma quebra de página.
 
- 
+\section{Tamanho do texto}
 
+A alteração do tamanho da fonte no \LaTeX{} pode ser feita em dois níveis, afetando todo o documento ou partes dele.
+Usar um tamanho de fonte diferente em um nível global afetará todo o texto de tamanho normal, bem como o tamanho dos cabeçalhos, notas de rodapé etc.
+No entanto, pode se alterar o tamanho da fonte localmente como por exemplo em:, uma única palavra, algumas linhas de texto, uma tabela grande ou um título em todo o documento
+pode ser modificado.
+
+\subsection{Alterando em Todo Documento}
+
+As classes \textit{article}, \textit{report} e \textit{book} suportam 3 tamanhos de fonte diferentes, 10pt, 11pt, 12pt (por padrão 12pt).
+O tamanho da fonte é definido por meio do argumento opcional, por exemplo: \\
+
+\verb|\documentclass[12pt]{report}|
+
+\subsection{Alterando o Tamanho da Fonte Localmente}
+
+\LaTeX{} contém vários comandos para modificar o tamanho da fonte por exemplo: (do maior para o menor):
+
+\begin{verbatim}
+\Huge
+\huge
+\LARGE
+\Large
+\large
+\normalsize (padrão)
+\small
+\footnotesize
+\scriptsize
+\tiny
+\end{verbatim}

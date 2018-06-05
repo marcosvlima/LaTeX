@@ -1,5 +1,5 @@
-\documentclass[12pt]{report}
-\usepackage[english,brazilian]{babel} % determina a língua usada no texto
+\documentclass[brazil]{abntex2}
+% \usepackage[english,brazilian]{babel} % determina a língua usada no texto
 \usepackage[utf8]{inputenc} % determina a codificação usada (UTF8 Universal)
 \usepackage[T1]{fontenc} % determina a codificação dos fontes usados na saída
 \usepackage{lmodern} % melhora a qualidade dos fontes no PDF
@@ -9,6 +9,21 @@
 \usepackage{url} % permite colocar urls no texto
 \usepackage{lipsum}  
 \usepackage{geometry}
+
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
 
 \geometry{
     a4paper,
@@ -46,5 +61,8 @@
 
 \chapter{CONCLUSÃO}
 \lipsum[2-4]
+
+\bibliography{bibliografia}
+\bibliographystyle{abntex2-alf}
 
 \end{document}

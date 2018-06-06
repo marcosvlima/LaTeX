@@ -1,0 +1,143 @@
+\documentclass{beamer}
+
+% Para justificar o texto
+\usepackage{ragged2e}
+
+\usepackage{verbatim}
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\mode<presentation>
+
+\usetheme{Madrid}      % or try Darmstadt, Madrid, Warsaw, ...
+\usecolortheme{default} % or try albatross, beaver, crane, ...
+\usefonttheme{default}  % or try serif, structurebold, ...
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+
+\title{Como criar Slides com \LaTeX}
+\author{Jessica Dagostini; Marcos Lima}
+\date{Junho de 2018}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+	
+\section{Introdução}
+\begin{frame}{Introdução}
+\begin{block}{O que é a classe \textbf{Beamer}?}
+\justifying
+O Beamer é uma classe do LATEX para criação de apresentações no formato PDF, o que as torna altamente portáveis. 
+Sua estrutura é a mesma do LATEX, com algumas características específicas do Beamer.
+É possível desenvolver apresentações dinâmicas com sobreposições e transiçcões animadas entre os quadros.
+\end{block}
+\end{frame}
+    
+\section{Primeiros Passos}
+\begin{frame}[fragile]{Primeiros Passos}
+\begin{block}{Classe Beamer}
+Para utilizar a classe Beamer, assim como é feito com qualquer outra classe do LATEX, deve-se
+declará-la da seguinte forma:
+\begin{verbatim}
+\documentclass{beamer}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\subsection{Estrutura}
+\begin{frame}{Estrutura}
+\begin{itemize}
+\item A apresentação pode ser dividida em seções, subseções e quadros.
+\item Uma apresentação geralmente começa com uma página de título, seguida pelo sumário e, então, seu conteúdo.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estrutura}
+\begin{block}{Exemplo}
+\begin{verbatim}
+\title[título curto]{título completo}
+\author[nome abreviado]{nome completo}
+\institute{nome da instituição à qual o apresentador está vinculado}
+\date{\today}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Estrutura}
+\begin{block}{Gerar a Capa!}
+\begin{verbatim}
+%\begin{frame}
+\titlepage
+%\end{frame}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\section{Criando Slides}
+\begin{frame}[fragile]{Criando Slides}
+\begin{block}{Exemplo}
+\begin{verbatim}
+\section{Introdução}
+\begin{frame}
+...Texto...
+%\end{frame}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\subsection{Criando Blocos de Textos}
+\begin{frame}[fragile]{Criando Blocos de Textos}
+\begin{block}{Exemplo}
+\begin{verbatim}
+\begin{block}{título do bloco}
+conteúdo do bloco
+\end{block}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\section{Efeitos}
+\begin{frame}[fragile]{Efeitos}
+\begin{table}[]
+\centering
+\caption{Efeitos nos Slides}
+\label{my-table1}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Comando}} & \multicolumn{1}{c|}{\textbf{Efeito}}      \\ \hline
+\textbackslash{}transblindshorizontal  &  Cortinas horizontas se afastando          \\ \hline
+\textbackslash{}transblindsvertical    &  Cortinas verticais se afastando            \\ \hline
+\textbackslash{}transboxin             &  Movimento das bordas ao centro              \\ \hline
+\textbackslash{}transboxout            &  Movimento do centro às bordas       		   \\ \hline
+\textbackslash{}transdissolve          &  Dissolver devagar o conteúdo anterior         \\ \hline
+\textbackslash{}transglitter           &  Efeito Glitter numa direção específica         \\ \hline
+\textbackslash{}transslipverticalin    &  O conteúdo entra em duas linhas verticais       \\ \hline
+\textbackslash{}transslipverticalout   &  O conteúdo sai em duas linhas verticais          \\ \hline
+\textbackslash{}transhorizontalin      &  O conteúdo Entra em duas linhas horizontais       \\ \hline
+\textbackslash{}transhorizontalout     &  O conteúdo sai em duas linhas horizontais          \\ \hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+\section{Temas}
+\begin{frame}[fragile]{Temas}
+\begin{block}{Exemplo}
+\begin{verbatim}
+\usetheme{nome do tema} % Darmstadt, Madrid, Warsaw, ...
+\usecolortheme{default} % albatross, beaver, crane, ...
+\usefonttheme{default}  % serif, structurebold, ...
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+\end{verbatim}
+\end{block}
+\href{https://hartwork.org/beamer-theme-matrix/}{\beamergotobutton{Exemplo de Temas}}
+\end{frame}
+
+\section{FIM!}
+\begin{frame}{FIM!}
+Obrigado :D
+\end{frame}
+\end{document}

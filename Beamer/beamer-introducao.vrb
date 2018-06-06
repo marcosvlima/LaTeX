@@ -1,0 +1,11 @@
+\frametitle{Temas}
+\begin{block}{Exemplo}
+\begin{verbatim}
+\usetheme{nome do tema} % Darmstadt, Madrid, Warsaw, ...
+\usecolortheme{default} % albatross, beaver, crane, ...
+\usefonttheme{default}  % serif, structurebold, ...
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+\end{verbatim}
+\end{block}
+\href{https://hartwork.org/beamer-theme-matrix/}{\beamergotobutton{Exemplo de Temas}}

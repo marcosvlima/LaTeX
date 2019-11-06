@@ -262,7 +262,7 @@
     \renewcommand{\subsubsectionautorefname}{Subsubse\c{c}\~ao}
     \renewcommand{\paragraphautorefname}{Subse\c{c}\~ao}
 % Ajusta nome da Referências para REFERÊNCIAS
-    \renewcommand{\bibname}{REFERÊNCIAS}
+    \renewcommand{\bibname}{REFER{\^E}NCIAS}
 }
 
 
